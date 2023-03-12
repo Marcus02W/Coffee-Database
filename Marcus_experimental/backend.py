@@ -20,19 +20,19 @@ def loadSignupPage():
 @app.route("/login_api", methods=['POST'])
 def handleLogin():
     isvalid = False
-    login_info = request.data
+    login_info = request.form
 
     # checking validity
     # Verbindungszeichenfolge erstellen
     conn = psycopg2.connect(
-        host="127.0.0.1",
-        database="Coffee_Database",
+        host="localhost",
+        database="coffee_db",
         user="postgres",
-        password="postgres")
+        password="placeholder")
     
     try:
-        sql_query = 'SELECT * FROM customer_login WHERE customer_login.customer_id=="' + login_info['username'] + '" AND customer_login.customer_password=="' + login_info["password"] + '"'
-        user = pd.read_sql_query(sql_query, conn)
+        sql_query = "SELECT * FROM customer_login WHERE customer_login.customer_id='"+login_info['username']+"' AND customer_login.customer_password='" + login_info['password'] + "'"
+        login_data = pd.read_sql_query(sql_query, conn)
         isvalid=True
 
     except:

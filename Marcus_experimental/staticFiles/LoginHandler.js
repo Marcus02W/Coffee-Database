@@ -1,7 +1,7 @@
 function login(){
     const formData = new FormData();
-    var username = document.getElementsByName("uname").value;
-    var password = document.getElementsByName("psw").value;
+    var username = document.getElementById("uname").value;
+    var password = document.getElementById("psw").value;
     formData.append("username", username);
     formData.append("password", password);
 
@@ -12,6 +12,7 @@ function login(){
     xhr.onreadystatechange = () => {
         if (xhr.readyState === 4){
             response = xhr.responseText;
+            console.log(response);
             if (response=="failed") {
                 document.getElementById("response").innerHTML=="Login failed! Invalid username and/or password."
             } 
