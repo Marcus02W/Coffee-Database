@@ -59,7 +59,7 @@ def handleSignup():
         host="localhost",
         database="coffee_db",
         user="postgres",
-        password="x5Tg9%eZu1!")
+        password="placeholder")
     
     cursor = conn.cursor()
 
