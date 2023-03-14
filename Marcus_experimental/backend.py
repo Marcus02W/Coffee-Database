@@ -17,6 +17,8 @@ def loadLoginPage():
 def loadSignupPage():
     return render_template('Signup.html')
 
+
+# api's
 @app.route("/login_api", methods=['POST'])
 def handleLogin():
     isvalid = False
@@ -28,7 +30,7 @@ def handleLogin():
         host="localhost",
         database="coffee_db",
         user="postgres",
-        password="placeholder")
+        password="x5Tg9%eZu1!")
     
     try:
         sql_query = "SELECT * FROM customer_login WHERE customer_login.customer_id='"+login_info['username']+"' AND customer_login.customer_password='" + login_info['password'] + "'"
@@ -42,6 +44,38 @@ def handleLogin():
 
     if isvalid:
         return login_info
+    else:
+        return "failed"
+    
+
+@app.route("/signup_api", methods=['POST'])
+def handleSignup():
+    isvalid = False
+    signup_info = request.form
+
+    # checking validity
+    # Verbindungszeichenfolge erstellen
+    conn = psycopg2.connect(
+        host="localhost",
+        database="coffee_db",
+        user="postgres",
+        password="x5Tg9%eZu1!")
+    
+    cursor = conn.cursor()
+
+    try:
+        sql_query = "begin; insert into customers (customer_id, customer_firstname, customer_lastname) values (" + signup_info['username'] + ",'" + signup_info['firstname'] + "','" + signup_info['lastname'] + "'); insert into customer_login (customer_id, customer_password) values (" + signup_info['username'] + ",'" + signup_info['password'] + "'); commit;"
+        cursor.execute(sql_query)
+        isvalid=True
+
+    except:
+        isvalid=False
+
+    conn.commit()
+    conn.close()
+
+    if isvalid:
+        return "successful"
     else:
         return "failed"
     
