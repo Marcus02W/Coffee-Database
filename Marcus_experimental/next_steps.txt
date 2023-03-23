@@ -1,0 +1,8 @@
+Cookie is set on login page now 
+
+Next steps:
+-> onload-function that checks whether cookie is set and valid (redirects to login page if cookie is not valid!)
+=> important: for security reasons the cookie has to be checked before every database access by the backend, 
+because the javascript could be manipulated
+(this could happen sort of automatically when sending along username and password in each http request
+and then using a join of the login table and the other needed table in the SQL query)
