@@ -17,6 +17,14 @@ def loadLoginPage():
 def loadSignupPage():
     return render_template('Signup.html')
 
+@app.route("/customer_landing")
+def loadCustomerLanding():
+    return render_template('customer_landing.html')
+
+@app.route("/coffee_shop_landing")
+def loadCoffeeShopLanding():
+    return render_template('coffee_shop_landing.html')
+
 
 # api's
 @app.route("/login_api", methods=['POST'])
