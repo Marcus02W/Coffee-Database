@@ -6,3 +6,12 @@ Next steps:
 because the javascript could be manipulated
 (this could happen sort of automatically when sending along username and password in each http request
 and then using a join of the login table and the other needed table in the SQL query)
+
+=> implement seperate login and signup page for coffe shops with same logic
+
+=> create seperate sub pages for editing the content displayed on the overview page
+
+Important: 
+Implement a mechanism that prevents multiple users being logged in at the same time!
+=> Should already be working by default probably?
+

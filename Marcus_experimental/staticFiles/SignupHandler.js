@@ -25,6 +25,9 @@ function signup(){
             else{
                 document.getElementById("response").innerHTML="Registration successfull! Explore a world full of the finest coffee."
                 document.getElementById("login_link").style.display="inline";
+                setTimeout(() => {
+                    window.location.href = '/login';
+                  }, 1000);
             } 
         }
     }
