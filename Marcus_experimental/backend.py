@@ -109,6 +109,7 @@ def customer_page_handling():
     cursor = conn.cursor()
     
     try:
+
         # password query is always executed before any other query to check validity of login information!
         sql_query = "SELECT * FROM customer_login WHERE customer_login.customer_id='"+data['username']+"' AND customer_login.customer_password='" + data['password'] + "'"
         cursor.execute(sql_query)
@@ -116,11 +117,69 @@ def customer_page_handling():
         if result is None:
             return "unveriefied connection"
 
+
         # returning all the stats for the customer landing page
+        result_dict=dict()
+
+
+        # coffee shops overview
+        coffee_shops_overview_query = "select name, city from coffee_shops limit 10;"
+        cursor.execute(coffee_shops_overview_query)
+        result_coffee_shops_overview = cursor.fetchall()
+        result_dict["coffee_shops_overview"] = result_coffee_shops_overview
+
+        # ratings
+        ratings_overview_query = "select c.name, r.score from coffee_shops c join ratings r on c.shop_id = r.shop_id order by r.score desc limit 5;"
+        cursor.execute(ratings_overview_query)
+        result_ratings_overview = cursor.fetchall()
+        result_dict["ratings_overview"] = result_ratings_overview
+
+        # recent orders
 
         conn.commit()
         conn.close()
 
+        return result_dict
+
+    except:
+
+        return "unverified connection"
+    
+
+
+@app.route("/coffee_shop_page_api", methods=['POST'])
+def coffee_shop_page_handling():
+        
+
+    data = request.form
+
+    conn = psycopg2.connect(
+        host="localhost",
+        database="coffee_db",
+        user="postgres",
+        password="x5Tg9%eZu1!")
+    
+    cursor = conn.cursor()
+    
+    try:
+        ####### query has to be chaned to fit coffee shops instead of customers
+        # password query is always executed before any other query to check validity of login information!
+        sql_query = "SELECT * FROM customer_login WHERE customer_login.customer_id='"+data['username']+"' AND customer_login.customer_password='" + data['password'] + "'"
+        cursor.execute(sql_query)
+        result = cursor.fetchone()
+        if result is None:
+            return "unveriefied connection"
+
+
+
+
+
+
+
+        conn.commit()
+        conn.close()
+
+    ### return value here has to be changed
         return "verified connection"
 
     except:
