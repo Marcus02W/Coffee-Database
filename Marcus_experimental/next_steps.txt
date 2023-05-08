@@ -22,11 +22,14 @@ Next steps:
 
 => implement seperate login and signup page for coffe shops with same logic
 
+=> implement starting page
+
 => complete all queries for the overview pages and test them
 
 => create admin page where everything can be edited in a table editor format (also good for tesing purposes to have an easy overview over whole database basically)
 
 => create seperate sub pages for editing the content displayed on the overview page (&displaying the whole content scrollable of course)
+(only for the customer overview though -> and only for creating orders, for coffee shops you can put all on the overview page)
 
 
 
