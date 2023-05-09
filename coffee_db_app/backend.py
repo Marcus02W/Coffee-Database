@@ -211,8 +211,13 @@ def customer_page_handling():
         result_dict["ratings_overview"] = result_ratings_overview
 
         # recent orders
+        recent_orders_overview_query = "select o.order_id, o.time, cof.name  from (customer c join orders o on c.customer_id = o.customer_id) join coffee_shops cof on o.shop_id = cof.shop_id order by o.time desc limit 5;"
+        cursor.execute(recent_orders_overview_query)
+        result_recent_orders_overview = cursor.fetchall()
+        result_dict["recent_orders_overview"] = result_recent_orders_overview
 
         conn.commit()
+        cursor.close()
         conn.close()
 
         return result_dict
