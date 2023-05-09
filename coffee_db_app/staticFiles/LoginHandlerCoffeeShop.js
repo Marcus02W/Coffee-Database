@@ -7,7 +7,7 @@ function login(){
     formData.append("password", password);
 
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", "/login_api");
+    xhr.open("POST", "/login_api_coffee_shop");
     xhr.send(formData);
 
     xhr.onreadystatechange = () => {
@@ -23,9 +23,9 @@ function login(){
                 document.cookie = "username="+response['username'];
                 document.cookie = "password="+response['password'];
                 console.log(document.cookie);
-                document.getElementById("response").innerHTML="Login successfull! Explore a world full of the finest coffee."
+                document.getElementById("response").innerHTML="Login successfull! Make your excellent coffee accessible to a broad coffee loving community."
                 setTimeout(() => {
-                    window.location.href = '/customer_landing';
+                    window.location.href = '/coffee_shop_landing';
                   }, 1000);
                 
                 //abspeichern von Login Info in Session Cookie noch einfügen

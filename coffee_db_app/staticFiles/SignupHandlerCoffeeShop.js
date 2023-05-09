@@ -1,16 +1,24 @@
 function signup(){
+
     const formData = new FormData();
+    var id = document.getElementById("id").value;
+    var name = document.getElementById("name").value;
+    var city = document.getElementById("city").value;
+    var adress = document.getElementById("adress").value;
     var firstname = document.getElementById("firstname").value;
     var lastname = document.getElementById("lastname").value;
-    var username = document.getElementById("uname").value;
     var password = document.getElementById("psw").value;
-    formData.append("firstname", firstname);
-    formData.append("lastname", lastname);
-    formData.append("username", username);
+
+    formData.append("shop_id", id);
+    formData.append("name", name);
+    formData.append("city", city);
+    formData.append("adress", adress);
+    formData.append("owner_firstname", firstname);
+    formData.append("owner_lastname", lastname);
     formData.append("password", password);
 
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", "/signup_api");
+    xhr.open("POST", "/signup_api_coffee_shop");
     xhr.send(formData);
 
     xhr.onreadystatechange = () => {
@@ -23,10 +31,10 @@ function signup(){
             } 
 
             else{
-                document.getElementById("response").innerHTML="Registration successfull! Explore a world full of the finest coffee."
+                document.getElementById("response").innerHTML="Registration successfull! Make your excellent coffee accessible to a broad coffee loving community.."
                 document.getElementById("login_link").style.display="inline";
                 setTimeout(() => {
-                    window.location.href = '/login';
+                    window.location.href = '/login_coffee_shop';
                   }, 1000);
             } 
         }
