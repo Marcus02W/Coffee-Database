@@ -4,6 +4,11 @@
     /* Weitere Formate, z.B. woff, woff2, können hinzugefügt werden */
   }
     body {
+        background-image: url('coffee.jpg');
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: cover;
+        background-attachment: fixed;
         font-family: 'Coffe', sans-serif;
         display: flex;
         flex-direction: column;
@@ -12,6 +17,7 @@
         height: 100vh;
         margin: 0;
         background-color: #f4f4f4;
+        color:rgb(158, 158, 158);
     }
     .header {
         position: absolute;
