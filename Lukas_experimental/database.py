@@ -5,7 +5,11 @@ app = Flask(__name__,template_folder="templateFiles",static_folder="staticFiles"
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return render_template("start.html")
+
+@app.route("/admin")
+def admin():
+    return render_template("admin.html")
 
 @app.route("/sql_abfrage", methods=["POST"])
 def sql():
