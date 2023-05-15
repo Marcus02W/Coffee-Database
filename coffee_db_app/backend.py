@@ -308,6 +308,24 @@ def sql():
         html_df=df.to_html()
         return html_df
 
+@app.route("/sql_abfrage_tabel", methods=["POST"])
+def sql_tabel():
+        sql_querry =request.form["drop"]
+        if sql_querry!="none":
+            # Verbindungszeichenfolge erstellen
+            conn = psycopg2.connect(
+                host="localhost",
+                database="coffee_db",
+                user="coffee_db_technical_user",
+                password="coffeedb")
+            sql_querry=f"Select * From {sql_querry};"
+            df = pd.read_sql_query(sql_querry, conn)
+            conn.close()
+            html_df=df.to_html()
+        else:
+            html_df="Please select a table"
+        return html_df
+
 
 
 

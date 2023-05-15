@@ -23,3 +23,28 @@ function sql_querry(){
     }
 
 }
+function sql_tabels(){
+    
+    const formData = new FormData();
+    var drop_value = document.getElementById("drop").value;
+    formData.append("drop", drop_value);
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "/sql_abfrage_tabel");
+    xhr.send(formData);
+
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4){
+            response = xhr.responseText;
+            console.log(response);
+            if (response=="None") {
+                document.getElementById("response").innerHTML="Fehler"
+            } 
+
+            else{
+                document.getElementById("response").innerHTML = response
+            } 
+        }
+    }
+
+}

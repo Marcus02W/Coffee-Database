@@ -9,16 +9,18 @@
         <h1>Admin Page</h1>
             <div class="page-div">
                 <label>SQL-Tabels:</label>
-                <select>
-                    <option value="shops_login">shops_login</option>
-                    <option value="coffe_shops">coffe_shops</option>
-                    <option value="coffe_types">coffe_types</option>
+                <select id="drop">
+                    <option value="none">none</option>
+                    <option value="shop_login">shops_login</option>
+                    <option value="coffee_shops">coffe_shops</option>
+                    <option value="coffee_types">coffe_types</option>
                     <option value="ratings">ratings</option>
-                    <option value="order">order</option>
-                    <option value="order_item">order_item</option>
+                    <option value="orders">order</option>
+                    <option value="orderitem">order_item</option>
                     <option value="customers">customers</option>
                     <option value="customer_login">customer_login</option>
                 </select>
+                <button id="btn" type="button" onclick="sql_tabels()">submit</button>
                 <label>SQL-Input:</label>
                 <input type="text" name="sql-querry" id="querry"/>
                 <button id="btn" type="button" onclick="sql_querry()">submit</button>
