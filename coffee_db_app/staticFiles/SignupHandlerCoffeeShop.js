@@ -5,8 +5,8 @@ function signup(){
     var name = document.getElementById("name").value;
     var city = document.getElementById("city").value;
     var adress = document.getElementById("adress").value;
-    var firstname = document.getElementById("firstname").value;
-    var lastname = document.getElementById("lastname").value;
+    var firstname = document.getElementById("owner_firstname").value;
+    var lastname = document.getElementById("owner_lastname").value;
     var password = document.getElementById("psw").value;
 
     formData.append("shop_id", id);
