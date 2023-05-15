@@ -7,22 +7,30 @@ app = Flask(__name__, template_folder='templateFiles', static_folder='staticFile
 
 @app.route('/')
 def index():
-    return redirect('/login', code=301)
+    return redirect('/start', code=301)
+
+@app.route('/start')
+def start():
+    return render_template('start.html')
+
+@app.route("/admin")
+def admin():
+    return render_template("admin.html")
 
 @app.route("/login_customer")
-def loadLoginPage():
+def loadLoginPage_customer():
     return render_template('Login_customer.html')
 
 @app.route("/signup_customer")
-def loadSignupPage():
+def loadSignupPage_customer():
     return render_template('Signup_customer.html')
 
 @app.route("/login_coffee_shop")
-def loadLoginPage():
+def loadLoginPage_coffee_shop():
     return render_template('Login_coffee_shop.html')
 
 @app.route("/signup_coffee_shop")
-def loadSignupPage():
+def loadSignupPage_coffe_shop():
     return render_template('Signup_coffee_shop.html')
 
 @app.route("/customer_landing")
@@ -36,7 +44,7 @@ def loadCoffeeShopLanding():
 
 # api's
 @app.route("/login_api_customer", methods=['POST'])
-def handleLogin():
+def handleLogin_customer():
     isvalid = False
     login_info = request.form
 
@@ -70,7 +78,7 @@ def handleLogin():
     
 
 @app.route("/signup_api_customer", methods=['POST'])
-def handleSignup():
+def handleSignup_customer():
     isvalid = False
     signup_info = request.form
 
@@ -104,7 +112,7 @@ def handleSignup():
 
 
 @app.route("/login_api_coffee_shop", methods=['POST'])
-def handleLogin():
+def handleLogin_coffe_shop():
     isvalid = False
     login_info = request.form
 
@@ -138,7 +146,7 @@ def handleLogin():
     
 
 @app.route("/signup_api_coffee_shop", methods=['POST'])
-def handleSignup():
+def handleSignup_coffe_shop():
     isvalid = False
     signup_info = request.form
 
