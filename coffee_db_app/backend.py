@@ -53,8 +53,8 @@ def handleLogin_customer():
     conn = psycopg2.connect(
         host="localhost",
         database="coffee_db",
-        user="postgres",
-        password="x5Tg9%eZu1!")
+        user="coffee_db_technical_user",
+        password="coffeedb")
     
     cursor = conn.cursor()
     
@@ -87,8 +87,8 @@ def handleSignup_customer():
     conn = psycopg2.connect(
         host="localhost",
         database="coffee_db",
-        user="postgres",
-        password="x5Tg9%eZu1!")
+        user="coffee_db_technical_user",
+        password="coffeedb")
     
     cursor = conn.cursor()
 
@@ -121,8 +121,8 @@ def handleLogin_coffe_shop():
     conn = psycopg2.connect(
         host="localhost",
         database="coffee_db",
-        user="postgres",
-        password="x5Tg9%eZu1!")
+        user="coffee_db_technical_user",
+        password="coffeedb")
     
     cursor = conn.cursor()
     
@@ -155,8 +155,8 @@ def handleSignup_coffe_shop():
     conn = psycopg2.connect(
         host="localhost",
         database="coffee_db",
-        user="postgres",
-        password="x5Tg9%eZu1!")
+        user="coffee_db_technical_user",
+        password="coffeedb")
     
     cursor = conn.cursor()
 
@@ -187,8 +187,8 @@ def customer_page_handling():
     conn = psycopg2.connect(
         host="localhost",
         database="coffee_db",
-        user="postgres",
-        password="x5Tg9%eZu1!")
+        user="coffee_db_technical_user",
+        password="coffeedb")
     
     cursor = conn.cursor()
     
@@ -245,8 +245,8 @@ def coffee_shop_page_handling():
     conn = psycopg2.connect(
         host="localhost",
         database="coffee_db",
-        user="postgres",
-        password="x5Tg9%eZu1!")
+        user="coffee_db_technical_user",
+        password="coffeedb")
     
     cursor = conn.cursor()
     
