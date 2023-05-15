@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="../staticFiles/style_index.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Admin Page</h1>
+        <form action="http://localhost:1337/sql_abfrage" method="post">
+            <div class="page-div">
+                <label>SQL-Tabels:</label>
+                <select>
+                    <option value="shops_login">shops_login</option>
+                    <option value="coffe_shops">coffe_shops</option>
+                    <option value="coffe_types">coffe_types</option>
+                    <option value="ratings">ratings</option>
+                    <option value="order">order</option>
+                    <option value="order_item">order_item</option>
+                    <option value="customers">customers</option>
+                    <option value="customer_login">customer_login</option>
+                </select>
+                <label>SQL-Input:</label>
+                <input type="text" name="sql-querry"/>
+                <input id="btn" type="submit" value="submit"/>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
