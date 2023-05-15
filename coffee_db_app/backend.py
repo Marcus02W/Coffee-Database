@@ -294,7 +294,19 @@ def coffee_shop_page_handling():
 
         return "unverified connection"
 
-    
+@app.route("/sql_abfrage", methods=["POST"])
+def sql():
+        sql_querry =request.form["querry"]
+        # Verbindungszeichenfolge erstellen
+        conn = psycopg2.connect(
+            host="localhost",
+            database="coffee_db",
+            user="coffee_db_technical_user",
+            password="coffeedb")
+        df = pd.read_sql_query(sql_querry, conn)
+        conn.close()
+        html_df=df.to_html()
+        return html_df
 
 
 

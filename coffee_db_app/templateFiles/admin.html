@@ -2,11 +2,11 @@
 <html>
 <head>
     <link rel="stylesheet" type="text/css" href="../staticFiles/style_index.css">
+    <script type="text/javascript" src="../staticFiles/admin_page_handler.js"></script>
 </head>
 <body>
     <div class="container">
         <h1>Admin Page</h1>
-        <form action="http://localhost:1337/sql_abfrage" method="post">
             <div class="page-div">
                 <label>SQL-Tabels:</label>
                 <select>
@@ -20,10 +20,10 @@
                     <option value="customer_login">customer_login</option>
                 </select>
                 <label>SQL-Input:</label>
-                <input type="text" name="sql-querry"/>
-                <input id="btn" type="submit" value="submit"/>
+                <input type="text" name="sql-querry" id="querry"/>
+                <button id="btn" type="button" onclick="sql_querry()">submit</button>
             </div>
-        </form>
+            <div id="response"></div>
     </div>
 </body>
 </html>
