@@ -250,51 +250,81 @@ def coffee_shop_page_handling():
     
     cursor = conn.cursor()
     
-    #try:
-        ####### query has to be chaned to fit coffee shops instead of customers
-        # password query is always executed before any other query to check validity of login information!
-    sql_query = "SELECT * FROM shop_login WHERE shop_id="+data['username']+" AND shop_password='" + data['password'] + "'"
-    cursor.execute(sql_query)
-    result = cursor.fetchall()
-    if result is None:
-        return "unveriefied connection"
-    
+    try:
+            ####### query has to be chaned to fit coffee shops instead of customers
+            # password query is always executed before any other query to check validity of login information!
+        sql_query = "SELECT * FROM shop_login WHERE shop_id="+data['username']+" AND shop_password='" + data['password'] + "'"
+        cursor.execute(sql_query)
+        result = cursor.fetchall()
+        if result is None:
+            return "unveriefied connection"
+        
 
-    # returning all the stats for the customer landing page
-    result_dict=dict()
-
-
-    # coffee shops overview
-    coffee_types_overview_query = f"select ct.coffee_type, ct.size from coffee_shops cs, coffee_types ct, coffee_shops_coffee_types rel where rel.shop_id = {data['username']} and ct.type_id = rel.type_id;"
-    cursor.execute(coffee_types_overview_query)
-    result_coffee_types_overview = cursor.fetchall()
-    result_dict["coffee_types_overview"] = result_coffee_types_overview
-
-    # ratings
-    ratings_overview_query = f"select c.customer_firstname || '' || c.customer_lastname as customer_name, r.score from customers c join ratings r on c.customer_id = r.customer_id where r.shop_id = {data['username']} order by r.score desc limit 5;"
-    cursor.execute(ratings_overview_query)
-    result_ratings_overview = cursor.fetchall()
-    result_dict["ratings_overview"] = result_ratings_overview
-
-    # recent orders
-    recent_orders_overview_query = f"select o.order_id, o.time, c.customer_firstname || '' || c.customer_lastname as customer_name  from customers c join orders o on c.customer_id = o.customer_id where o.shop_id = {data['username']} order by o.time desc limit 5;"
-    cursor.execute(recent_orders_overview_query)
-    result_recent_orders_overview = cursor.fetchall()
-    result_dict["recent_orders_overview"] = result_recent_orders_overview
+        # returning all the stats for the customer landing page
+        result_dict=dict()
 
 
-    conn.commit()
-    cursor.close()
-    conn.close()
+        # coffee shops overview
+        coffee_types_overview_query = f"select ct.coffee_type, ct.size from coffee_shops cs, coffee_types ct, coffee_shops_coffee_types rel where rel.shop_id = {data['username']} and ct.type_id = rel.type_id;"
+        cursor.execute(coffee_types_overview_query)
+        result_coffee_types_overview = cursor.fetchall()
+        result_dict["coffee_types_overview"] = result_coffee_types_overview
 
-### return value here has to be changed
-    return result_dict
+        # ratings
+        ratings_overview_query = f"select c.customer_firstname || '' || c.customer_lastname as customer_name, r.score from customers c join ratings r on c.customer_id = r.customer_id where r.shop_id = {data['username']} order by r.score desc limit 5;"
+        cursor.execute(ratings_overview_query)
+        result_ratings_overview = cursor.fetchall()
+        result_dict["ratings_overview"] = result_ratings_overview
 
-    #except:
+        # recent orders
+        recent_orders_overview_query = f"select o.order_id, o.time, c.customer_firstname || '' || c.customer_lastname as customer_name  from customers c join orders o on c.customer_id = o.customer_id where o.shop_id = {data['username']} order by o.time desc limit 5;"
+        cursor.execute(recent_orders_overview_query)
+        result_recent_orders_overview = cursor.fetchall()
+        result_dict["recent_orders_overview"] = result_recent_orders_overview
 
-      #  return "unverified connection (type 2)"
 
-    
+        conn.commit()
+        cursor.close()
+        conn.close()
+
+    ### return value here has to be changed
+        return result_dict
+
+    except:
+
+        return "unverified connection"
+
+@app.route("/sql_abfrage", methods=["POST"])
+def sql():
+        sql_querry =request.form["querry"]
+        # Verbindungszeichenfolge erstellen
+        conn = psycopg2.connect(
+            host="localhost",
+            database="coffee_db",
+            user="coffee_db_technical_user",
+            password="coffeedb")
+        df = pd.read_sql_query(sql_querry, conn)
+        conn.close()
+        html_df=df.to_html()
+        return html_df
+
+@app.route("/sql_abfrage_tabel", methods=["POST"])
+def sql_tabel():
+        sql_querry =request.form["drop"]
+        if sql_querry!="none":
+            # Verbindungszeichenfolge erstellen
+            conn = psycopg2.connect(
+                host="localhost",
+                database="coffee_db",
+                user="coffee_db_technical_user",
+                password="coffeedb")
+            sql_querry=f"Select * From {sql_querry};"
+            df = pd.read_sql_query(sql_querry, conn)
+            conn.close()
+            html_df=df.to_html()
+        else:
+            html_df="Please select a table"
+        return html_df
 
 
 
