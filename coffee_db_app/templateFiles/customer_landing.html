@@ -9,16 +9,58 @@
 <body>
 	<div class="left-section">
 		<h1>Explore coffee shops</h1>
-		<p>Placeholder for coffee shops loaded by backend. (also include link to view all down below)</p>
-	</div>
+
+		<div class="table-container">
+			<table id="table-coffee-shops">
+			<thead>
+				<tr>
+				<th>Shop name</th>
+				<th>Shop location</th>
+				</tr>
+			</thead>
+			<tbody id="table-body-coffee-shops">
+				<!-- JavaScript will generate the rows here -->
+			</tbody>
+			</table>
+		</div>
+		
+		
+	  </div>
+	  
 	<div class="right-section">
 		<div class="top-right-section">
 			<h2>Your recent orders</h2>
-			<p>Placeholder for list of orders loaded by backend. (also include link to view all down below)</p>
+			<div class="table-container">
+				<table id="table-recent-orders">
+				<thead>
+					<tr>
+					<th>Order id</th>
+					<th>time</th>
+					<th>shop name</th>
+					</tr>
+				</thead>
+				<tbody id="table-body-recent-orders">
+					<!-- JavaScript will generate the rows here -->
+				</tbody>
+				</table>
+			</div>
 		</div>
+
 		<div class="bottom-right-section">
-			<h2>Your recent ratings</h2>
-			<p>Placeholder for list of rankings loaded by backend. (also include link to view all down below)</p>
+			<h2>Your top ratings</h2>
+			<div class="table-container">
+				<table id="table-ratings">
+				<thead>
+					<tr>
+					<th>Shop name</th>
+					<th>Your rating</th>
+					</tr>
+				</thead>
+				<tbody id="table-body-ratings">
+					<!-- JavaScript will generate the rows here -->
+				</tbody>
+				</table>
+			</div>
 		</div>
 	</div>
 </body>
