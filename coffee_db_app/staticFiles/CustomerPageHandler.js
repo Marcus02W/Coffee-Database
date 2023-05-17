@@ -44,8 +44,11 @@ window.onload = () => {
                 var xhr = new XMLHttpRequest();
                 xhr.open("POST", "/rating_update_api");
                 xhr.send(formDataRating);
-
-                location.reload();
+                xhr.onreadystatechange = () => {
+                  if (xhr.readyState === 4){
+                    location.reload();
+                  }
+                }
               });
               return star;
             }

@@ -304,7 +304,7 @@ def update_rating():
         password="coffeedb")
     cursor = conn.cursor()
 
-    query = f"INSERT INTO ratings (rating_id, customer_id, shop_id, score) VALUES ({data['rating_id']}, {data['customer_id']}, {data['shop_id']}, {data['score']}) ON DUPLICATE KEY UPDATE score_column = your_updated_score_value;"
+    query = f"INSERT INTO ratings (rating_id, customer_id, shop_id, score) VALUES ({data['rating_id']}, {data['customer_id']}, {data['shop_id']}, {data['score']}) ON CONFLICT (rating_id) DO UPDATE SET score = {data['score']};"
     cursor.execute(query)
 
     conn.commit()
