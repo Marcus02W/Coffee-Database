@@ -199,7 +199,7 @@ def customer_page_handling():
         cursor.execute(sql_query)
         result = cursor.fetchone()
         if result is None:
-            return "unveriefied connection"
+            return "unverified connection"
 
 
         # returning all the stats for the customer landing page
