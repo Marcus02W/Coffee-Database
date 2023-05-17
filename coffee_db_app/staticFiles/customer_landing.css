@@ -82,4 +82,19 @@ img {
     font-weight: bold;
   }
   
+  /* Add this CSS code to your existing styles or create a new CSS file */
+.star {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background-image: url('../staticFiles/grey_star.png'); /* Replace with your gray star image */
+  background-repeat: no-repeat;
+  background-size: cover;
+  cursor: pointer;
+}
+
+.star.golden {
+  background-image: url('../staticFiles/golden_star.png'); /* Replace with your golden star image */
+}
+
   

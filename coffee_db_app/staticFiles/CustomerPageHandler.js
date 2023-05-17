@@ -21,21 +21,64 @@ window.onload = () => {
         if (xhr.readyState === 4){
             response = xhr.responseText;
             response = JSON.parse(response);
-            console.log(response['coffee_shops_overview']);
+            console.log(response);
 
             const tableBody = document.getElementById('table-coffee-shops'); // Select the table body element
 
+            // Helper function to create a star element
+            function createStar(index, shop_id) {
+              const star = document.createElement('span');
+              star.classList.add('star');
+              star.classList.add('gray');
+              star.addEventListener('click', function() {
+                const rating = index + 1;
+                // Send the rating value to JavaScript
+                // ... (add your code to send the rating value to JavaScript)
+                console.log(rating, shop_id); // Output the rating value to the console
+                location.reload();
+              });
+              return star;
+            }
+
             response['coffee_shops_overview'].forEach((row) => {
-              const tableRow = document.createElement('tr'); // Create a table row element
-            
-              row.forEach((cell) => {
-                const tableCell = document.createElement('td'); // Create a table cell element
-                tableCell.textContent = cell;
+              const tableRow = document.createElement('tr');
+
+              row.forEach((cell, index) => {
+                const tableCell = document.createElement('td');
+
+                if (index===0){
+                  return;
+                }
+                  
+                else if (index === 3) { // Check if it's the score cell
+                  const starsContainer = document.createElement('div');
+                  starsContainer.classList.add('stars-container');
+
+                  // Determine the rating value (number of golden stars)
+                  const rating = cell ? parseInt(cell) : 0;
+
+                  // Create 5 stars, coloring the golden ones based on the rating
+                  for (let i = 0; i < 5; i++) {
+                    const star = createStar(i, row[0]);
+                    if (i < rating) {
+                      star.classList.remove('gray');
+                      star.classList.add('golden');
+                    }
+                    starsContainer.appendChild(star);
+                  }
+
+                  tableCell.appendChild(starsContainer);
+                } else {
+                  tableCell.textContent = cell;
+                }
+
                 tableRow.appendChild(tableCell);
               });
-            
+
               tableBody.appendChild(tableRow);
             });
+
+
 
             const tableBodyOrders = document.getElementById('table-recent-orders'); // Select the table body element
 
