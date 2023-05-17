@@ -8,17 +8,56 @@
 </head>
 <body>
 	<div class="left-section">
-		<h1>Coffee types you are currently offering</h1>
-		<p>Placeholder for coffee types offered loaded by backend. (also include link to view all down below)</p>
+		<h1>Coffee types <br>you are currently offering</h1>
+		<div class="table-container">
+			<table id="table-coffee-offerings">
+			<thead>
+				<tr>
+				<th>coffee type</th>
+				<th>size</th>
+				</tr>
+			</thead>
+			<tbody id="table-body-recent-orders">
+				<!-- JavaScript will generate the rows here -->
+			</tbody>
+			</table>
+		</div>
 	</div>
+
 	<div class="right-section">
 		<div class="top-right-section">
 			<h2>Your recent orders</h2>
-			<p>Placeholder for list of orders loaded by backend. (also include link to view all down below)</p>
+			<div class="table-container">
+				<table id="table-recent-orders">
+				<thead>
+					<tr>
+					<th>Order id</th>
+					<th>time</th>
+					<th>customer name</th>
+					</tr>
+				</thead>
+				<tbody id="table-body-recent-orders">
+					<!-- JavaScript will generate the rows here -->
+				</tbody>
+				</table>
+			</div>
 		</div>
+
 		<div class="bottom-right-section">
-			<h2>Your recent ratings</h2>
-			<p>Placeholder for list of rankings loaded by backend. (also include link to view all down below)</p>
+			<h2>Your top ratings</h2>
+			<div class="table-container">
+				<table id="table-ratings">
+				<thead>
+					<tr>
+					<th>customer name</th>
+					<th>score given to you</th>
+					</tr>
+				</thead>
+				<tbody id="table-body-recent-orders">
+					<!-- JavaScript will generate the rows here -->
+				</tbody>
+				</table>
+			</div>
 		</div>
 	</div>
 </body>

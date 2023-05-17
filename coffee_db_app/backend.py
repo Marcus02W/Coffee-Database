@@ -199,7 +199,7 @@ def customer_page_handling():
         cursor.execute(sql_query)
         result = cursor.fetchone()
         if result is None:
-            return "unveriefied connection"
+            return "unverified connection"
 
 
         # returning all the stats for the customer landing page
@@ -207,7 +207,7 @@ def customer_page_handling():
 
 
         # coffee shops overview
-        coffee_shops_overview_query = "select name, city from coffee_shops limit 10;"
+        coffee_shops_overview_query = "select c.name, c.city, r.score from coffee_shops c left join ratings r on c.shop_id = r.shop_id order by r.score desc;"
         cursor.execute(coffee_shops_overview_query)
         result_coffee_shops_overview = cursor.fetchall()
         result_dict["coffee_shops_overview"] = result_coffee_shops_overview
