@@ -207,7 +207,7 @@ def customer_page_handling():
 
 
         # coffee shops overview
-        coffee_shops_overview_query = "select c.name, c.city, r.score from coffee_shops c left join ratings r on c.shop_id = r.shop_id order by r.score desc;"
+        coffee_shops_overview_query = "select c.shop_id, c.name, c.city, r.score from coffee_shops c left join ratings r on c.shop_id = r.shop_id order by r.score desc;"
         cursor.execute(coffee_shops_overview_query)
         result_coffee_shops_overview = cursor.fetchall()
         result_dict["coffee_shops_overview"] = result_coffee_shops_overview
@@ -293,6 +293,25 @@ def coffee_shop_page_handling():
     except:
 
         return "unverified connection"
+    
+@app.route("/rating_update_api", methods=['POST'])
+def update_rating():
+    data = request.form
+    conn = psycopg2.connect(
+        host="localhost",
+        database="coffee_db",
+        user="coffee_db_technical_user",
+        password="coffeedb")
+    cursor = conn.cursor()
+
+    query = f"INSERT INTO ratings (rating_id, customer_id, shop_id, score) VALUES ({data['rating_id']}, {data['customer_id']}, {data['shop_id']}, {data['score']}) ON CONFLICT (rating_id) DO UPDATE SET score = {data['score']};"
+    cursor.execute(query)
+
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+
 
 @app.route("/sql_abfrage", methods=["POST"])
 def sql():

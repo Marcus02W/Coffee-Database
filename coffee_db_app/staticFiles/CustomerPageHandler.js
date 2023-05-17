@@ -35,7 +35,20 @@ window.onload = () => {
                 // Send the rating value to JavaScript
                 // ... (add your code to send the rating value to JavaScript)
                 console.log(rating, shop_id); // Output the rating value to the console
-                location.reload();
+
+                const formDataRating = new FormData();
+                formDataRating.append("rating_id",username+shop_id);
+                formDataRating.append("customer_id", username);
+                formDataRating.append("shop_id", shop_id);
+                formDataRating.append("score", rating);
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "/rating_update_api");
+                xhr.send(formDataRating);
+                xhr.onreadystatechange = () => {
+                  if (xhr.readyState === 4){
+                    location.reload();
+                  }
+                }
               });
               return star;
             }
