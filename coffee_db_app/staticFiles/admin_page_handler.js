@@ -48,3 +48,25 @@ function sql_tabels(){
     }
 
 }
+
+function sql_avg_rating(){
+    const formData = new FormData();
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "/sql_avg_rating");
+    xhr.send(formData);
+
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4){
+            response = xhr.responseText;
+            console.log(response);
+            if (response=="failed") {
+                document.getElementById("response").innerHTML="Falsche Eingabe! :("
+            } 
+
+            else{
+                document.getElementById("response").innerHTML = response
+            } 
+        }
+    }
+
+}

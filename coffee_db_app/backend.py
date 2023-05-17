@@ -326,6 +326,19 @@ def sql_tabel():
             html_df="Please select a table"
         return html_df
 
+@app.route("/sql_avg_rating", methods=["POST"])
+def sql_avg_rating():
+    conn = psycopg2.connect(
+        host="localhost",
+        database="coffee_db",
+        user="coffee_db_technical_user",
+        password="coffeedb")
+    sql_querry="SELECT * FROM public.average_rating_mat;"
+    df = pd.read_sql_query(sql_querry, conn)
+    conn.close()
+    html_df=df.to_html()
+    return html_df
+
 
 
 
