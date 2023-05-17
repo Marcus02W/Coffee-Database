@@ -87,14 +87,14 @@ img {
   display: inline-block;
   width: 20px;
   height: 20px;
-  background-image: url('gray_star.png'); /* Replace with your gray star image */
+  background-image: url('../staticFiles/grey_star.png'); /* Replace with your gray star image */
   background-repeat: no-repeat;
   background-size: cover;
   cursor: pointer;
 }
 
 .star.golden {
-  background-image: url('golden_star.png'); /* Replace with your golden star image */
+  background-image: url('../staticFiles/golden_star.png'); /* Replace with your golden star image */
 }
 
   
