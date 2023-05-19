@@ -354,17 +354,25 @@ def sql_drop_req():
         user="coffee_db_technical_user",
         password="coffeedb")
     
-    if drop_req == "AVG-Rating-Mat-view":
-        sql_querry="SELECT * FROM public.average_rating_mat;"
-        df = pd.read_sql_query(sql_querry, conn)
-        conn.close()
-        html_df=df.to_html()
-    elif drop_req == "worst-rating":
-        sql_querry = "SELECT * FROM public.worst_shop_ratings;"
-        df = pd.read_sql_query(sql_querry, conn)
-        conn.close()
-        html_df=df.to_html()
-
+    if drop_req != "none":
+        if drop_req == "AVG-Rating-Mat-view":
+            sql_querry="SELECT * FROM public.average_rating_mat;"
+            df = pd.read_sql_query(sql_querry, conn)
+            conn.close()
+            html_df=df.to_html()
+        elif drop_req == "worst-rating":
+            sql_querry = "SELECT * FROM public.worst_shop_ratings;"
+            df = pd.read_sql_query(sql_querry, conn)
+            conn.close()
+            html_df=df.to_html()   
+        elif drop_req == "Cross-types-shops":
+            sql_querry = "SELECT * FROM coffee_shops CROSS JOIN coffee_types;"
+            df = pd.read_sql_query(sql_querry, conn)
+            conn.close()
+            html_df=df.to_html()
+    else:
+        html_df="Please select a table"
+        
     return html_df
 
 
