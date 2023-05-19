@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS public.orders
     order_id integer NOT NULL,
     shop_id integer,
     customer_id integer,
-    order_date character varying COLLATE pg_catalog."default" NOT NULL,
+    order_date integer,
     CONSTRAINT order_pkey PRIMARY KEY (order_id)
 );
 

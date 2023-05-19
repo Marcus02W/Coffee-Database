@@ -32,8 +32,6 @@ window.onload = () => {
               star.classList.add('gray');
               star.addEventListener('click', function() {
                 const rating = index + 1;
-                // Send the rating value to JavaScript
-                // ... (add your code to send the rating value to JavaScript)
                 console.log(rating, shop_id); // Output the rating value to the console
 
                 const formDataRating = new FormData();

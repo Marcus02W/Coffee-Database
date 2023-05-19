@@ -265,7 +265,13 @@ def coffee_shop_page_handling():
 
 
         # coffee shops overview
-        coffee_types_overview_query = f"select ct.coffee_type, ct.size from coffee_shops cs, coffee_types ct, coffee_shops_coffee_types rel where rel.shop_id = {data['username']} and ct.coffee_type = rel.coffee_type and ct.size = rel.size;"
+        coffee_types_overview_query = f"""SELECT
+                                            ct.coffee_type,
+                                            ct.size,
+                                            CASE WHEN rel.coffee_type IS NOT NULL AND rel.size IS NOT NULL THEN true ELSE false END AS is_not_null
+                                            FROM coffee_types ct
+                                            LEFT JOIN coffee_shops_coffee_types rel ON ct.coffee_type = rel.coffee_type AND ct.size = rel.size;
+                                            where rel.shop_id = {data['username']} order by rel.coffee_type;"""
         cursor.execute(coffee_types_overview_query)
         result_coffee_types_overview = cursor.fetchall()
         result_dict["coffee_types_overview"] = result_coffee_types_overview

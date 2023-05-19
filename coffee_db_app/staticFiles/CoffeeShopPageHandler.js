@@ -28,8 +28,21 @@ window.onload = () => {
             response['coffee_types_overview'].forEach((row) => {
               const tableRow = document.createElement('tr'); // Create a table row element
             
-              row.forEach((cell) => {
+              row.forEach((cell, index) => {
                 const tableCell = document.createElement('td'); // Create a table cell element
+
+                if (index === 2) { 
+                  const clickableCell = document.createElement('td'); // Create a new table cell for the clickable element
+                  clickableCell.textContent = cell; // Set the text content of the clickable cell
+                  
+                  clickableCell.onclick = function() {
+                    // Your onclick function logic goes here
+                    console.log(row[0], row[1], row[2]);
+                  };
+                  
+                  tableRow.appendChild(clickableCell);
+                }
+                
                 tableCell.textContent = cell;
                 tableRow.appendChild(tableCell);
               });
