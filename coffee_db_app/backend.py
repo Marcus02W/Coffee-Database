@@ -207,7 +207,7 @@ def customer_page_handling():
 
 
         # coffee shops overview
-        coffee_shops_overview_query = "select c.shop_id, c.name, c.city, r.score from coffee_shops c left join ratings r on c.shop_id = r.shop_id order by r.score desc;"
+        coffee_shops_overview_query = f"select c.shop_id, c.name, c.city, r.score, round(average_rating_mat.average_score, 1) from (coffee_shops c left join ratings r  on c.shop_id = r.shop_id) left join average_rating_mat on average_rating_mat.shop_id = c.shop_id where r.customer_id = {data['username']} order by r.score desc;"
         cursor.execute(coffee_shops_overview_query)
         result_coffee_shops_overview = cursor.fetchall()
         result_dict["coffee_shops_overview"] = result_coffee_shops_overview
@@ -310,6 +310,8 @@ def update_rating():
     conn.commit()
     cursor.close()
     conn.close()
+
+    return "success"
 
 
 
