@@ -49,10 +49,13 @@ function sql_tabels(){
 
 }
 
-function sql_avg_rating(){
+function sql_drop_req(){
     const formData = new FormData();
+    var drop_req = document.getElementById("drop_req").value;
+    formData.append("drop_req", drop_req);
+
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", "/sql_avg_rating");
+    xhr.open("POST", "/sql_drop_req");
     xhr.send(formData);
 
     xhr.onreadystatechange = () => {

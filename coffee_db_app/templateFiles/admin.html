@@ -13,9 +13,11 @@
         <h1>Admin Page</h1>
             <div class="page-div">
                 <label>Fast-Calc:</label>
-                <button id="btn" type="button" onclick="sql_avg_rating()">Avg-rating-shop</button>
-
-
+                <select id="drop_req">
+                    <option value="AVG-Rating-Mat-view">AVG-Rating-Mat-view</option>
+                    <option value="worst-rating">worst-rating</option>
+                </select>
+                <button id="btn" type="button" onclick="sql_drop_req()">Avg-rating-shop</button>
 
                 <label>SQL-Tabels:</label>
                 <select id="drop">
