@@ -37,7 +37,6 @@ window.onload = () => {
                 console.log(rating, shop_id); // Output the rating value to the console
 
                 const formDataRating = new FormData();
-                formDataRating.append("rating_id",username+shop_id);
                 formDataRating.append("customer_id", username);
                 formDataRating.append("shop_id", shop_id);
                 formDataRating.append("score", rating);

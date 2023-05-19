@@ -265,7 +265,7 @@ def coffee_shop_page_handling():
 
 
         # coffee shops overview
-        coffee_types_overview_query = f"select ct.coffee_type, ct.size from coffee_shops cs, coffee_types ct, coffee_shops_coffee_types rel where rel.shop_id = {data['username']} and ct.type_id = rel.type_id;"
+        coffee_types_overview_query = f"select ct.coffee_type, ct.size from coffee_shops cs, coffee_types ct, coffee_shops_coffee_types rel where rel.shop_id = {data['username']} and ct.coffee_type = rel.coffee_type and ct.size = rel.size;"
         cursor.execute(coffee_types_overview_query)
         result_coffee_types_overview = cursor.fetchall()
         result_dict["coffee_types_overview"] = result_coffee_types_overview
@@ -304,7 +304,7 @@ def update_rating():
         password="coffeedb")
     cursor = conn.cursor()
 
-    query = f"INSERT INTO ratings (rating_id, customer_id, shop_id, score) VALUES ({data['rating_id']}, {data['customer_id']}, {data['shop_id']}, {data['score']}) ON CONFLICT (rating_id) DO UPDATE SET score = {data['score']};"
+    query = f"INSERT INTO ratings (customer_id, shop_id, score) VALUES ({data['customer_id']}, {data['shop_id']}, {data['score']}) ON CONFLICT (customer_id, shop_id) DO UPDATE SET score = {data['score']};"
     cursor.execute(query)
 
     conn.commit()
