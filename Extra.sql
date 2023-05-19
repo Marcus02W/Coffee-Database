@@ -2,6 +2,7 @@
 -- This view calculates the average rating (average_score) for each coffee shop (shop_name).
 CREATE MATERIALIZED VIEW public.average_rating_mat AS
 SELECT 
+    cs.shop_id AS shop_id,
     cs.name AS shop_name, 
     AVG(r.score) AS average_score
 FROM 
@@ -13,7 +14,7 @@ GROUP BY
 
 -- Creating a unique index on the "shop_name" column of the "average_rating_mat" materialized view.
 -- This can improve the performance of queries that filter or sort results based on the shop's name.
-CREATE UNIQUE INDEX idx_average_rating_mat ON public.average_rating_mat (shop_name);
+CREATE UNIQUE INDEX idx_average_rating_mat ON public.average_rating_mat (shop_id);
 
 -- Creating or replacing a function named "refresh_average_rating_mat".
 -- This function refreshes the materialized view "average_rating_mat".

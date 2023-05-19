@@ -16,15 +16,15 @@ CREATE TABLE IF NOT EXISTS public.coffee_shops
 CREATE TABLE IF NOT EXISTS public.coffee_shops_coffee_types
 (
     shop_id integer NOT NULL,
-    type_id integer NOT NULL
+    coffee_type character varying COLLATE pg_catalog."default" NOT NULL,
+    size character varying COLLATE pg_catalog."default" NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS public.coffee_types
 (
-    type_id integer NOT NULL,
-    coffee_type character varying COLLATE pg_catalog."default",
-    size character varying COLLATE pg_catalog."default",
-    CONSTRAINT coffee_types_pkey PRIMARY KEY (type_id)
+    coffee_type character varying COLLATE pg_catalog."default" NOT NULL,
+    size character varying COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT coffee_types_pkey PRIMARY KEY (coffee_type, size)
 );
 
 CREATE TABLE IF NOT EXISTS public.customer_login
@@ -44,10 +44,11 @@ CREATE TABLE IF NOT EXISTS public.customers
 
 CREATE TABLE IF NOT EXISTS public.orderitem
 (
-    type_id integer NOT NULL,
+    coffee_type character varying COLLATE pg_catalog."default" NOT NULL,
+    size character varying COLLATE pg_catalog."default" NOT NULL,
     "number" integer,
     order_id integer NOT NULL,
-    CONSTRAINT orderitem_pkey PRIMARY KEY (type_id, order_id)
+    CONSTRAINT orderitem_pkey PRIMARY KEY (coffee_type, size, order_id)
 );
 
 CREATE TABLE IF NOT EXISTS public.orders
@@ -55,17 +56,16 @@ CREATE TABLE IF NOT EXISTS public.orders
     order_id integer NOT NULL,
     shop_id integer,
     customer_id integer,
-    "time" time without time zone,
+    order_date character varying COLLATE pg_catalog."default" NOT NULL,
     CONSTRAINT order_pkey PRIMARY KEY (order_id)
 );
 
 CREATE TABLE IF NOT EXISTS public.ratings
 (
-    rating_id integer NOT NULL,
-    customer_id integer,
-    shop_id integer,
+    customer_id integer NOT NULL,
+    shop_id integer NOT NULL,
     score integer,
-    CONSTRAINT ratings_pkey PRIMARY KEY (rating_id)
+    CONSTRAINT ratings_pkey PRIMARY KEY (customer_id, shop_id)
 );
 
 CREATE TABLE IF NOT EXISTS public.shop_login
@@ -84,8 +84,8 @@ ALTER TABLE IF EXISTS public.coffee_shops_coffee_types
 
 
 ALTER TABLE IF EXISTS public.coffee_shops_coffee_types
-    ADD CONSTRAINT type_connector_mn FOREIGN KEY (type_id)
-    REFERENCES public.coffee_types (type_id) MATCH SIMPLE
+    ADD CONSTRAINT type_connector_mn FOREIGN KEY (coffee_type, size)
+    REFERENCES public.coffee_types (coffee_type, size) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION
     NOT VALID;
@@ -107,8 +107,8 @@ ALTER TABLE IF EXISTS public.orderitem
 
 
 ALTER TABLE IF EXISTS public.orderitem
-    ADD CONSTRAINT type_connector FOREIGN KEY (type_id)
-    REFERENCES public.coffee_types (type_id) MATCH SIMPLE
+    ADD CONSTRAINT type_connector FOREIGN KEY (coffee_type, size)
+    REFERENCES public.coffee_types (coffee_type, size) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION;
 
