@@ -265,7 +265,7 @@ def coffee_shop_page_handling():
 
 
         # coffee shops overview
-        coffee_types_overview_query = f"SELECT ct.coffee_type, ct.size, CASE WHEN rel.coffee_type IS NOT NULL AND rel.size IS NOT NULL THEN true ELSE false END AS is_not_null FROM coffee_types ct LEFT JOIN coffee_shops_coffee_types rel ON ct.coffee_type = rel.coffee_type AND ct.size = rel.size where rel.shop_id = {data['username']} order by rel.coffee_type;"
+        coffee_types_overview_query = f"SELECT ct.coffee_type, ct.size, false AS is_not_null FROM coffee_types ct WHERE NOT EXISTS (SELECT 1 FROM coffee_shops_coffee_types rel WHERE ct.coffee_type = rel.coffee_type AND ct.size = rel.size AND rel.shop_id = 1) UNION SELECT ct.coffee_type, ct.size, CASE WHEN rel.coffee_type IS NOT NULL AND rel.size IS NOT NULL THEN true ELSE false END AS is_not_null FROM coffee_types ct LEFT JOIN coffee_shops_coffee_types rel ON ct.coffee_type = rel.coffee_type AND ct.size = rel.size WHERE rel.shop_id = {data['username']} ORDER BY coffee_type asc, size desc;"
         cursor.execute(coffee_types_overview_query)
         result_coffee_types_overview = cursor.fetchall()
         result_dict["coffee_types_overview"] = result_coffee_types_overview
@@ -305,6 +305,27 @@ def update_rating():
     cursor = conn.cursor()
 
     query = f"INSERT INTO ratings (customer_id, shop_id, score) VALUES ({data['customer_id']}, {data['shop_id']}, {data['score']}) ON CONFLICT (customer_id, shop_id) DO UPDATE SET score = {data['score']};"
+    cursor.execute(query)
+
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+    return "success"
+
+@app.route("/coffee_types_update_api", methods=['POST'])
+def update_coffee_types():
+    data = request.form
+    conn = psycopg2.connect(
+        host="localhost",
+        database="coffee_db",
+        user="coffee_db_technical_user",
+        password="coffeedb")
+    cursor = conn.cursor()
+    if data['is_offered'] == "false":
+        query = f"INSERT INTO coffee_shops_coffee_types (shop_id, coffee_type, size) VALUES ({data['shop_id']}, '{data['coffee_type']}', '{data['size']}');"
+    else:
+        query = f"delete from coffee_shops_coffee_types where shop_id = {data['shop_id']} and coffee_type = '{data['coffee_type']}' and size = '{data['size']}';"
     cursor.execute(query)
 
     conn.commit()

@@ -38,6 +38,16 @@ window.onload = () => {
                   clickableCell.onclick = function() {
                     // Your onclick function logic goes here
                     console.log(row[0], row[1], row[2]);
+                    const formDataTypes = new FormData();
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("POST", "/coffee_types_update_api");
+                    formDataTypes.append("is_offered", row[2]);
+                    formDataTypes.append("size", row[1]);
+                    formDataTypes.append("coffee_type", row[0]);
+                    formDataTypes.append("shop_id", username);
+                    xhr.send(formDataTypes);
+                    location.reload();
+                    
                   };
                   
                   tableRow.appendChild(clickableCell);
