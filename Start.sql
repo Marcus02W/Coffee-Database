@@ -5,8 +5,9 @@ CREATE TABLE IF NOT EXISTS public.coffee_shops
 (
     shop_id integer NOT NULL,
     name character varying COLLATE pg_catalog."default" NOT NULL,
+    country character varying COLLATE pg_catalog."default" NOT NULL,
     city character varying COLLATE pg_catalog."default" NOT NULL,
-    adress character varying COLLATE pg_catalog."default" NOT NULL,
+    street character varying COLLATE pg_catalog."default" NOT NULL,
     owner_firstname character varying COLLATE pg_catalog."default" NOT NULL,
     owner_lastname character varying COLLATE pg_catalog."default" NOT NULL,
     CONSTRAINT coffee_shops_pkey PRIMARY KEY (shop_id)
@@ -28,8 +29,9 @@ CREATE TABLE IF NOT EXISTS public.coffee_types
 
 CREATE TABLE IF NOT EXISTS public.customer_login
 (
-    customer_id integer,
-    customer_password character varying COLLATE pg_catalog."default"
+    customer_id integer NOT NULL,
+    customer_password character varying COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT customer_login_pkey PRIMARY KEY (customer_id, customer_password)
 );
 
 CREATE TABLE IF NOT EXISTS public.customers
@@ -40,20 +42,21 @@ CREATE TABLE IF NOT EXISTS public.customers
     CONSTRAINT customers_pkey PRIMARY KEY (customer_id)
 );
 
-CREATE TABLE IF NOT EXISTS public."order"
+CREATE TABLE IF NOT EXISTS public.orderitem
+(
+    type_id integer NOT NULL,
+    "number" integer,
+    order_id integer NOT NULL,
+    CONSTRAINT orderitem_pkey PRIMARY KEY (type_id, order_id)
+);
+
+CREATE TABLE IF NOT EXISTS public.orders
 (
     order_id integer NOT NULL,
     shop_id integer,
     customer_id integer,
     "time" time without time zone,
     CONSTRAINT order_pkey PRIMARY KEY (order_id)
-);
-
-CREATE TABLE IF NOT EXISTS public.orderitem
-(
-    type_id integer,
-    "number" integer,
-    order_id integer
 );
 
 CREATE TABLE IF NOT EXISTS public.ratings
@@ -67,8 +70,9 @@ CREATE TABLE IF NOT EXISTS public.ratings
 
 CREATE TABLE IF NOT EXISTS public.shop_login
 (
-    shop_password character varying COLLATE pg_catalog."default",
-    shop_id integer
+    shop_password character varying COLLATE pg_catalog."default" NOT NULL,
+    shop_id integer NOT NULL,
+    CONSTRAINT shop_login_pkey PRIMARY KEY (shop_password, shop_id)
 );
 
 ALTER TABLE IF EXISTS public.coffee_shops_coffee_types
@@ -94,23 +98,9 @@ ALTER TABLE IF EXISTS public.customer_login
     ON DELETE NO ACTION;
 
 
-ALTER TABLE IF EXISTS public."order"
-    ADD CONSTRAINT customer_connector2 FOREIGN KEY (customer_id)
-    REFERENCES public.customers (customer_id) MATCH SIMPLE
-    ON UPDATE NO ACTION
-    ON DELETE NO ACTION;
-
-
-ALTER TABLE IF EXISTS public."order"
-    ADD CONSTRAINT shop_connector2 FOREIGN KEY (shop_id)
-    REFERENCES public.coffee_shops (shop_id) MATCH SIMPLE
-    ON UPDATE NO ACTION
-    ON DELETE NO ACTION;
-
-
 ALTER TABLE IF EXISTS public.orderitem
     ADD CONSTRAINT order_connector FOREIGN KEY (order_id)
-    REFERENCES public."order" (order_id) MATCH SIMPLE
+    REFERENCES public.orders (order_id) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION
     NOT VALID;
@@ -119,6 +109,20 @@ ALTER TABLE IF EXISTS public.orderitem
 ALTER TABLE IF EXISTS public.orderitem
     ADD CONSTRAINT type_connector FOREIGN KEY (type_id)
     REFERENCES public.coffee_types (type_id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
+
+
+ALTER TABLE IF EXISTS public.orders
+    ADD CONSTRAINT customer_connector2 FOREIGN KEY (customer_id)
+    REFERENCES public.customers (customer_id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
+
+
+ALTER TABLE IF EXISTS public.orders
+    ADD CONSTRAINT shop_connector2 FOREIGN KEY (shop_id)
+    REFERENCES public.coffee_shops (shop_id) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION;
 
