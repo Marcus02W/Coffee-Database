@@ -83,7 +83,7 @@ VALUES
     (9, '123123'),
     (10, 'letmein');
 
-INSERT INTO orders (order_id, shop_id, customer_id, time)
+INSERT INTO orders (order_id, shop_id, customer_id, order_date)
 VALUES
     (1, 7, 2, '20220201'),
     (2, 4, 6, '20220202'),

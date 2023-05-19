@@ -10,7 +10,7 @@ FROM
 JOIN 
     public.ratings r ON cs.shop_id = r.shop_id
 GROUP BY 
-    cs.name;
+    cs.shop_id;
 
 -- Creating a unique index on the "shop_name" column of the "average_rating_mat" materialized view.
 -- This can improve the performance of queries that filter or sort results based on the shop's name.

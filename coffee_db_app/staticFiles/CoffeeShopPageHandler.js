@@ -19,7 +19,7 @@ window.onload = () => {
     xhr.onreadystatechange = () => {
         if (xhr.readyState === 4){
             response = xhr.responseText;
-            //response = JSON.parse(response);
+            response = JSON.parse(response);
             console.log(response);
 
 
@@ -42,9 +42,10 @@ window.onload = () => {
                   
                   tableRow.appendChild(clickableCell);
                 }
-                
-                tableCell.textContent = cell;
-                tableRow.appendChild(tableCell);
+                else{
+                  tableCell.textContent = cell;
+                  tableRow.appendChild(tableCell);
+                }
               });
             
               tableBody.appendChild(tableRow);
