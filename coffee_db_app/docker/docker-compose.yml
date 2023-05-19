@@ -1,0 +1,27 @@
+version: '3.8'
+services:
+  database:
+    image: 'postgres:12.3'
+    ports:
+      - '5433:5432'
+    container_name: postgres-company
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: coffee_db
+    volumes:
+      - ./sql/start.sql:/docker-entrypoint-initdb.d/1-start.sql
+      - ./sql/data.sql:/docker-entrypoint-initdb.d/2-data.sql
+      - ./sql/Extra.sql:/docker-entrypoint-initdb.d/3-Extra.sql
+  web:
+    build: .
+    ports:
+      - '5000:5000'
+    volumes:
+      - .:/app
+    environment:
+      - FLASK_APP=app.py
+      - FLASK_RUN_HOST=0.0.0.0
+      - DATABASE_URL=postgresql://postgres:postgres@database:5432/coffee_db
+    depends_on:
+      - database
