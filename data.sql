@@ -1,3 +1,36 @@
+INSERT INTO coffee_types (type_id, coffee_type, size)
+VALUES
+    (1, 'Espresso', 'S'),
+    (2, 'Espresso', 'M'),
+    (3, 'Espresso', 'L'),
+    (4, 'Americano', 'S'),
+    (5, 'Americano', 'M'),
+    (6, 'Americano', 'L'),
+    (7, 'Latte', 'S'),
+    (8, 'Latte', 'M'),
+    (9, 'Latte', 'L'),
+    (10, 'Cappuccino', 'S'),
+    (11, 'Cappuccino', 'M'),
+    (12, 'Cappuccino', 'L'),
+    (13, 'Macchiato', 'S'),
+    (14, 'Macchiato', 'M'),
+    (15, 'Macchiato', 'L'),
+    (16, 'Mocha', 'S'),
+    (17, 'Mocha', 'M'),
+    (18, 'Mocha', 'L'),
+    (19, 'Flat White', 'S'),
+    (20, 'Flat White', 'M'),
+    (21, 'Flat White', 'L'),
+    (22, 'Filterkaffee', 'S'),
+    (23, 'Filterkaffee', 'M'),
+    (24, 'Filterkaffee', 'L'),
+    (25, 'Frappé', 'S'),
+    (26, 'Frappé', 'M'),
+    (27, 'Frappé', 'L'),
+    (28, 'Affogato', 'S'),
+    (29, 'Affogato', 'M'),
+    (30, 'Affogato', 'L');
+
 INSERT INTO coffee_shops (shop_id, name, country, city, street, owner_firstname, owner_lastname)
 VALUES
     (1, 'Blue Bottle Coffee', 'USA', 'Oakland', '300 Webster St', 'James', 'Freeman'),
