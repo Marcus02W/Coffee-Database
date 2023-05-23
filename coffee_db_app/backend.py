@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect
 import psycopg2
 import pandas as pd
+from datetime import datetime, date
 
 
 app = Flask(__name__, template_folder='templateFiles', static_folder='staticFiles')
@@ -319,7 +320,7 @@ def loadOrderingCoffeeTypes():
         if result is None:
             return "unverified connection"
         
-        coffee_types_query = f"" # coffee type query
+        coffee_types_query = f"select coffee_type, size from coffee_shops_coffee_types where shop_id = {data['shop_id']}" # coffee type query
         cursor.execute(coffee_types_query)
         result = cursor.fetchall()
         conn.commit()
@@ -372,6 +373,41 @@ def update_coffee_types():
     conn.close()
 
     return "success"
+
+
+@app.route("/order_processing_api", methods=['POST'])
+def process_order():
+    data = request.form
+
+    
+
+    current_date = date.today().strftime("%Y%m%d")
+
+    conn = psycopg2.connect(
+        host="localhost",
+        database="coffee_db",
+        user="coffee_db_technical_user",
+        password="coffeedb")
+    cursor = conn.cursor()
+
+    query_last_id = f"select order_id from orders order by order_date desc limit 1;" # query to create order with its belonging order items
+
+    cursor.execute(query_last_id)
+
+    last_id = cursor.fetchall()
+
+    last_id_value = last_id[0][0]
+
+    # insertion queries
+    #insertion_query = f"""insert into orders (order_id, shop_id, customer_id, order_date) values ({last_id_value+1}, {data['shop_id']}, {data['customer_id']}, {current_time});
+    #                      insert into orderItems ..."""
+
+
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+    return last_id_value
 
 
 
