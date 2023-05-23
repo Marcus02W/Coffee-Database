@@ -48,3 +48,28 @@ function sql_tabels(){
     }
 
 }
+
+function sql_drop_req(){
+    const formData = new FormData();
+    var drop_req = document.getElementById("drop_req").value;
+    formData.append("drop_req", drop_req);
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "/sql_drop_req");
+    xhr.send(formData);
+
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4){
+            response = xhr.responseText;
+            console.log(response);
+            if (response=="failed") {
+                document.getElementById("response").innerHTML="Falsche Eingabe! :("
+            } 
+
+            else{
+                document.getElementById("response").innerHTML = response
+            } 
+        }
+    }
+
+}

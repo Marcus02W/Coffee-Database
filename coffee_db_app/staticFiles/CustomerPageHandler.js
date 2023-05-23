@@ -32,12 +32,9 @@ window.onload = () => {
               star.classList.add('gray');
               star.addEventListener('click', function() {
                 const rating = index + 1;
-                // Send the rating value to JavaScript
-                // ... (add your code to send the rating value to JavaScript)
                 console.log(rating, shop_id); // Output the rating value to the console
 
                 const formDataRating = new FormData();
-                formDataRating.append("rating_id",username+shop_id);
                 formDataRating.append("customer_id", username);
                 formDataRating.append("shop_id", shop_id);
                 formDataRating.append("score", rating);
@@ -87,6 +84,19 @@ window.onload = () => {
 
                 tableRow.appendChild(tableCell);
               });
+              tableCell = document.createElement('td');
+              var link = document.createElement('a');
+
+              // Set the href attribute
+              link.href = 'ordering_page?parameter=' + row[0];
+
+              // Set the link text
+              var linkText = document.createTextNode('Order now');
+              link.appendChild(linkText);
+
+              tableCell.appendChild(link);
+
+              tableRow.appendChild(tableCell);
 
               tableBody.appendChild(tableRow);
             });

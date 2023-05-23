@@ -41,6 +41,10 @@ def loadCustomerLanding():
 def loadCoffeeShopLanding():
     return render_template('coffee_shop_landing.html')
 
+@app.route("/ordering_page")
+def loadOrderingPage():
+    return render_template('ordering_page.html')
+
 
 # api's
 @app.route("/login_api_customer", methods=['POST'])
@@ -207,7 +211,7 @@ def customer_page_handling():
 
 
         # coffee shops overview
-        coffee_shops_overview_query = "select c.shop_id, c.name, c.city, r.score from coffee_shops c left join ratings r on c.shop_id = r.shop_id order by r.score desc;"
+        coffee_shops_overview_query = f"select c.shop_id, c.name, c.city, r.score, round(average_rating_mat.average_score, 1) from (coffee_shops c left join ratings r  on c.shop_id = r.shop_id) left join average_rating_mat on average_rating_mat.shop_id = c.shop_id where r.customer_id = {data['username']} order by r.score desc;"
         cursor.execute(coffee_shops_overview_query)
         result_coffee_shops_overview = cursor.fetchall()
         result_dict["coffee_shops_overview"] = result_coffee_shops_overview
@@ -219,7 +223,7 @@ def customer_page_handling():
         result_dict["ratings_overview"] = result_ratings_overview
 
         # recent orders
-        recent_orders_overview_query = "select o.order_id, o.time, cof.name  from (customers c join orders o on c.customer_id = o.customer_id) join coffee_shops cof on o.shop_id = cof.shop_id order by o.time desc limit 5;"
+        recent_orders_overview_query = "select o.order_id, o.order_date, cof.name  from (customers c join orders o on c.customer_id = o.customer_id) join coffee_shops cof on o.shop_id = cof.shop_id order by o.order_date desc limit 5;"
         cursor.execute(recent_orders_overview_query)
         result_recent_orders_overview = cursor.fetchall()
         result_dict["recent_orders_overview"] = result_recent_orders_overview
@@ -265,7 +269,7 @@ def coffee_shop_page_handling():
 
 
         # coffee shops overview
-        coffee_types_overview_query = f"select ct.coffee_type, ct.size from coffee_shops cs, coffee_types ct, coffee_shops_coffee_types rel where rel.shop_id = {data['username']} and ct.type_id = rel.type_id;"
+        coffee_types_overview_query = f"SELECT ct.coffee_type, ct.size, false AS is_not_null FROM coffee_types ct WHERE NOT EXISTS (SELECT 1 FROM coffee_shops_coffee_types rel WHERE ct.coffee_type = rel.coffee_type AND ct.size = rel.size AND rel.shop_id = 1) UNION SELECT ct.coffee_type, ct.size, CASE WHEN rel.coffee_type IS NOT NULL AND rel.size IS NOT NULL THEN true ELSE false END AS is_not_null FROM coffee_types ct LEFT JOIN coffee_shops_coffee_types rel ON ct.coffee_type = rel.coffee_type AND ct.size = rel.size WHERE rel.shop_id = {data['username']} ORDER BY coffee_type asc, size desc;"
         cursor.execute(coffee_types_overview_query)
         result_coffee_types_overview = cursor.fetchall()
         result_dict["coffee_types_overview"] = result_coffee_types_overview
@@ -277,7 +281,7 @@ def coffee_shop_page_handling():
         result_dict["ratings_overview"] = result_ratings_overview
 
         # recent orders
-        recent_orders_overview_query = f"select o.order_id, o.time, c.customer_firstname || '' || c.customer_lastname as customer_name  from customers c join orders o on c.customer_id = o.customer_id where o.shop_id = {data['username']} order by o.time desc limit 5;"
+        recent_orders_overview_query = f"select o.order_id, o.order_date, c.customer_firstname || '' || c.customer_lastname as customer_name  from customers c join orders o on c.customer_id = o.customer_id where o.shop_id = {data['username']} order by o.order_date desc limit 5;"
         cursor.execute(recent_orders_overview_query)
         result_recent_orders_overview = cursor.fetchall()
         result_dict["recent_orders_overview"] = result_recent_orders_overview
@@ -294,6 +298,41 @@ def coffee_shop_page_handling():
 
         return "unverified connection"
     
+@app.route("/ordering_page_api", methods=['POST'])
+def loadOrderingCoffeeTypes():
+    data = request.form
+
+    conn = psycopg2.connect(
+        host="localhost",
+        database="coffee_db",
+        user="coffee_db_technical_user",
+        password="coffeedb")
+    
+    cursor = conn.cursor()
+    
+    try:
+        ####### query has to be chaned to fit coffee shops instead of customers
+        # password query is always executed before any other query to check validity of login information!
+        sql_query = "SELECT * FROM shop_login WHERE shop_id="+data['username']+" AND shop_password='" + data['password'] + "'"
+        cursor.execute(sql_query)
+        result = cursor.fetchall()
+        if result is None:
+            return "unverified connection"
+        
+        coffee_types_query = f"" # coffee type query
+        cursor.execute(coffee_types_query)
+        result = cursor.fetchall()
+        conn.commit()
+        cursor.close()
+        conn.close()
+
+        return result
+
+    
+    except:
+        return "unverified connection"
+
+    
 @app.route("/rating_update_api", methods=['POST'])
 def update_rating():
     data = request.form
@@ -304,12 +343,35 @@ def update_rating():
         password="coffeedb")
     cursor = conn.cursor()
 
-    query = f"INSERT INTO ratings (rating_id, customer_id, shop_id, score) VALUES ({data['rating_id']}, {data['customer_id']}, {data['shop_id']}, {data['score']}) ON CONFLICT (rating_id) DO UPDATE SET score = {data['score']};"
+    query = f"INSERT INTO ratings (customer_id, shop_id, score) VALUES ({data['customer_id']}, {data['shop_id']}, {data['score']}) ON CONFLICT (customer_id, shop_id) DO UPDATE SET score = {data['score']};"
     cursor.execute(query)
 
     conn.commit()
     cursor.close()
     conn.close()
+
+    return "success"
+
+@app.route("/coffee_types_update_api", methods=['POST'])
+def update_coffee_types():
+    data = request.form
+    conn = psycopg2.connect(
+        host="localhost",
+        database="coffee_db",
+        user="coffee_db_technical_user",
+        password="coffeedb")
+    cursor = conn.cursor()
+    if data['is_offered'] == "false":
+        query = f"INSERT INTO coffee_shops_coffee_types (shop_id, coffee_type, size) VALUES ({data['shop_id']}, '{data['coffee_type']}', '{data['size']}');"
+    else:
+        query = f"delete from coffee_shops_coffee_types where shop_id = {data['shop_id']} and coffee_type = '{data['coffee_type']}' and size = '{data['size']}';"
+    cursor.execute(query)
+
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+    return "success"
 
 
 
@@ -344,6 +406,36 @@ def sql_tabel():
         else:
             html_df="Please select a table"
         return html_df
+
+@app.route("/sql_drop_req", methods=["POST"])
+def sql_drop_req():
+    drop_req =request.form["drop_req"]
+    conn = psycopg2.connect(
+        host="localhost",
+        database="coffee_db",
+        user="coffee_db_technical_user",
+        password="coffeedb")
+    
+    if drop_req != "none":
+        if drop_req == "AVG-Rating-Mat-view":
+            sql_querry="SELECT * FROM public.average_rating_mat;"
+            df = pd.read_sql_query(sql_querry, conn)
+            conn.close()
+            html_df=df.to_html()
+        elif drop_req == "worst-rating":
+            sql_querry = "SELECT * FROM public.worst_shop_ratings;"
+            df = pd.read_sql_query(sql_querry, conn)
+            conn.close()
+            html_df=df.to_html()   
+        elif drop_req == "Cross-types-shops":
+            sql_querry = "SELECT * FROM coffee_shops CROSS JOIN coffee_types;"
+            df = pd.read_sql_query(sql_querry, conn)
+            conn.close()
+            html_df=df.to_html()
+    else:
+        html_df="Please select a table"
+        
+    return html_df
 
 
 
