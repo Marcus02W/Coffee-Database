@@ -84,6 +84,19 @@ window.onload = () => {
 
                 tableRow.appendChild(tableCell);
               });
+              tableCell = document.createElement('td');
+              var link = document.createElement('a');
+
+              // Set the href attribute
+              link.href = 'ordering_page?parameter=' + row[0];
+
+              // Set the link text
+              var linkText = document.createTextNode('Order now');
+              link.appendChild(linkText);
+
+              tableCell.appendChild(link);
+
+              tableRow.appendChild(tableCell);
 
               tableBody.appendChild(tableRow);
             });

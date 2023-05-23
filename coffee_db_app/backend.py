@@ -41,6 +41,10 @@ def loadCustomerLanding():
 def loadCoffeeShopLanding():
     return render_template('coffee_shop_landing.html')
 
+@app.route("/ordering_page")
+def loadOrderingPage():
+    return render_template('ordering_page.html')
+
 
 # api's
 @app.route("/login_api_customer", methods=['POST'])
@@ -293,6 +297,41 @@ def coffee_shop_page_handling():
     except:
 
         return "unverified connection"
+    
+@app.route("/ordering_page_api", methods=['POST'])
+def loadOrderingCoffeeTypes():
+    data = request.form
+
+    conn = psycopg2.connect(
+        host="localhost",
+        database="coffee_db",
+        user="coffee_db_technical_user",
+        password="coffeedb")
+    
+    cursor = conn.cursor()
+    
+    try:
+        ####### query has to be chaned to fit coffee shops instead of customers
+        # password query is always executed before any other query to check validity of login information!
+        sql_query = "SELECT * FROM shop_login WHERE shop_id="+data['username']+" AND shop_password='" + data['password'] + "'"
+        cursor.execute(sql_query)
+        result = cursor.fetchall()
+        if result is None:
+            return "unverified connection"
+        
+        coffee_types_query = f"" # coffee type query
+        cursor.execute(coffee_types_query)
+        result = cursor.fetchall()
+        conn.commit()
+        cursor.close()
+        conn.close()
+
+        return result
+
+    
+    except:
+        return "unverified connection"
+
     
 @app.route("/rating_update_api", methods=['POST'])
 def update_rating():
