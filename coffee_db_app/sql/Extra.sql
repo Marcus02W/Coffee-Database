@@ -60,3 +60,20 @@ JOIN
     public.customers c ON r.customer_id = c.customer_id
 JOIN 
     public.coffee_shops cs ON r.shop_id = cs.shop_id;
+
+CREATE OR REPLACE FUNCTION add_rating_on_new_customer() RETURNS TRIGGER AS $$
+DECLARE 
+    shopId integer;
+BEGIN
+    FOR shopId IN 1..10 LOOP
+        INSERT INTO ratings (customer_id, shop_id, score) 
+        VALUES (NEW.customer_id, shopId, NULL);
+    END LOOP;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER new_customer_trigger
+AFTER INSERT ON customers
+FOR EACH ROW
+EXECUTE PROCEDURE add_rating_on_new_customer();
