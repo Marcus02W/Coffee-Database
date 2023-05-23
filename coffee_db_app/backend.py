@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect
 import psycopg2
 import pandas as pd
 from datetime import datetime, date
+import json
 
 
 app = Flask(__name__, template_folder='templateFiles', static_folder='staticFiles')
@@ -211,20 +212,20 @@ def customer_page_handling():
         result_dict=dict()
 
 
-        # coffee shops overview
+        # coffee shops overview (# FIX NEEDED)
         coffee_shops_overview_query = f"select c.shop_id, c.name, c.city, r.score, round(average_rating_mat.average_score, 1) from (coffee_shops c left join ratings r  on c.shop_id = r.shop_id) left join average_rating_mat on average_rating_mat.shop_id = c.shop_id where r.customer_id = {data['username']} order by r.score desc;"
         cursor.execute(coffee_shops_overview_query)
         result_coffee_shops_overview = cursor.fetchall()
         result_dict["coffee_shops_overview"] = result_coffee_shops_overview
 
         # ratings
-        ratings_overview_query = "select c.name, r.score from coffee_shops c join ratings r on c.shop_id = r.shop_id order by r.score desc limit 5;"
+        ratings_overview_query = f"select c.name, r.score from coffee_shops c join ratings r on c.shop_id = r.shop_id where r.customer_id = {data['username']} order by r.score desc limit 5;"
         cursor.execute(ratings_overview_query)
         result_ratings_overview = cursor.fetchall()
         result_dict["ratings_overview"] = result_ratings_overview
 
         # recent orders
-        recent_orders_overview_query = "select o.order_id, o.order_date, cof.name  from (customers c join orders o on c.customer_id = o.customer_id) join coffee_shops cof on o.shop_id = cof.shop_id order by o.order_date desc limit 5;"
+        recent_orders_overview_query = f"select o.order_id, o.order_date, cof.name  from (customers c join orders o on c.customer_id = o.customer_id) join coffee_shops cof on o.shop_id = cof.shop_id where o.customer_id = {data['username']} order by o.order_date desc limit 5;"
         cursor.execute(recent_orders_overview_query)
         result_recent_orders_overview = cursor.fetchall()
         result_dict["recent_orders_overview"] = result_recent_orders_overview
@@ -390,7 +391,7 @@ def process_order():
         password="coffeedb")
     cursor = conn.cursor()
 
-    query_last_id = f"select order_id from orders order by order_date desc limit 1;" # query to create order with its belonging order items
+    query_last_id = f"select order_id from orders order by order_id desc limit 1;" # query to create order with its belonging order items
 
     cursor.execute(query_last_id)
 
@@ -398,16 +399,23 @@ def process_order():
 
     last_id_value = last_id[0][0]
 
+    order_items_data = []
+    for sublist in json.loads(data['order_items']):
+        sublist.append(last_id_value+1)
+        order_items_data.append(sublist)
+
+    insert_items_tuples = ", ".join([str(tuple(row)) for row in order_items_data]) # order_id value still missing here
+
     # insertion queries
-    #insertion_query = f"""insert into orders (order_id, shop_id, customer_id, order_date) values ({last_id_value+1}, {data['shop_id']}, {data['customer_id']}, {current_time});
-    #                      insert into orderItems ..."""
+    insertion_query = f"""insert into orders (order_id, shop_id, customer_id, order_date) values ({last_id_value+1}, {data['shop_id']}, {data['customer_id']}, {current_date});
+                          insert into orderitem (coffee_type, size, number, order_id) values {insert_items_tuples};"""
 
-
+    cursor.execute(insertion_query)
     conn.commit()
     cursor.close()
     conn.close()
 
-    return last_id_value
+    return str(insert_items_tuples)
 
 
 

@@ -1,3 +1,4 @@
+
 window.onload = () => {
     const formData = new FormData();
     var username = document.cookie
@@ -103,7 +104,7 @@ function processInputs() {
     
         rowData.push(quantity);
     
-        console.log("Row " + (i + 1) + " data:", rowData);
+        //console.log("Row " + (i + 1) + " data:", rowData);
 
         order_items_list.push(rowData);
 
@@ -111,8 +112,18 @@ function processInputs() {
 
 
     }
+    var username = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("username="))
+    ?.split("=")[1];
+    var url = new URL(window.location.href);
+    var searchParams = new URLSearchParams(url.search);
+    var parameterValue = searchParams.get('parameter');
+    console.log(order_items_list);
 
-    orderItemsData.append("order_items", order_items_list);
+    var jsonOrderItems = JSON.stringify(order_items_list);
+
+    orderItemsData.append("order_items", jsonOrderItems);
     orderItemsData.append("customer_id", username);
     orderItemsData.append("shop_id", parameterValue);
 
