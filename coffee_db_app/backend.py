@@ -61,7 +61,8 @@ def handleLogin_customer():
     # checking validity
     # Verbindungszeichenfolge erstellen
     conn = psycopg2.connect(
-        host="localhost",
+        host="coffee_db_container",
+        port = 5432,
         database="coffee_db",
         user="coffee_db_technical_user",
         password="coffeedb")
@@ -95,7 +96,8 @@ def handleSignup_customer():
     # checking validity
     # Verbindungszeichenfolge erstellen
     conn = psycopg2.connect(
-        host="localhost",
+        host="coffee_db_container",
+        port = 5432,
         database="coffee_db",
         user="coffee_db_technical_user",
         password="coffeedb")
@@ -129,7 +131,8 @@ def handleLogin_coffe_shop():
     # checking validity
     # Verbindungszeichenfolge erstellen
     conn = psycopg2.connect(
-        host="localhost",
+        host="coffee_db_container",
+        port = 5432,
         database="coffee_db",
         user="coffee_db_technical_user",
         password="coffeedb")
@@ -163,7 +166,8 @@ def handleSignup_coffe_shop():
     # checking validity
     # Verbindungszeichenfolge erstellen
     conn = psycopg2.connect(
-        host="localhost",
+        host="coffee_db_container",
+        port = 5432,
         database="coffee_db",
         user="coffee_db_technical_user",
         password="coffeedb")
@@ -195,7 +199,8 @@ def customer_page_handling():
     data = request.form
 
     conn = psycopg2.connect(
-        host="localhost",
+        host="coffee_db_container",
+        port = 5432,
         database="coffee_db",
         user="coffee_db_technical_user",
         password="coffeedb")
@@ -253,7 +258,8 @@ def coffee_shop_page_handling():
     data = request.form
 
     conn = psycopg2.connect(
-        host="localhost",
+        host="coffee_db_container",
+        port = 5432,
         database="coffee_db",
         user="coffee_db_technical_user",
         password="coffeedb")
@@ -309,7 +315,8 @@ def loadOrderingCoffeeTypes():
     data = request.form
 
     conn = psycopg2.connect(
-        host="localhost",
+        host="coffee_db_container",
+        port = 5432,
         database="coffee_db",
         user="coffee_db_technical_user",
         password="coffeedb")
@@ -344,7 +351,8 @@ def loadOrderingDetails():
     data = request.form
 
     conn = psycopg2.connect(
-        host="localhost",
+        host="coffee_db_container",
+        port = 5432,
         database="coffee_db",
         user="coffee_db_technical_user",
         password="coffeedb")
@@ -380,7 +388,8 @@ def loadOrderingDetails():
 def update_rating():
     data = request.form
     conn = psycopg2.connect(
-        host="localhost",
+        host="coffee_db_container",
+        port = 5432,
         database="coffee_db",
         user="coffee_db_technical_user",
         password="coffeedb")
@@ -399,7 +408,8 @@ def update_rating():
 def update_coffee_types():
     data = request.form
     conn = psycopg2.connect(
-        host="localhost",
+        host="coffee_db_container",
+        port = 5432,
         database="coffee_db",
         user="coffee_db_technical_user",
         password="coffeedb")
@@ -426,7 +436,8 @@ def process_order():
     current_date = date.today().strftime("%Y%m%d")
 
     conn = psycopg2.connect(
-        host="localhost",
+        host="coffee_db_container",
+        port = 5432,
         database="coffee_db",
         user="coffee_db_technical_user",
         password="coffeedb")
@@ -465,7 +476,8 @@ def sql():
         sql_querry =request.form["querry"]
         # Verbindungszeichenfolge erstellen
         conn = psycopg2.connect(
-            host="localhost",
+            host="coffee_db_container",
+            port = 5432,
             database="coffee_db",
             user="coffee_db_technical_user",
             password="coffeedb")
@@ -497,7 +509,8 @@ def sql_tabel():
 def sql_drop_req():
     drop_req =request.form["drop_req"]
     conn = psycopg2.connect(
-        host="localhost",
+        host="coffee_db_container",
+        port = 5432,
         database="coffee_db",
         user="coffee_db_technical_user",
         password="coffeedb")
