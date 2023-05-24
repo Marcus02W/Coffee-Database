@@ -480,8 +480,7 @@ def sql_tabel():
         if sql_querry!="none":
             # Verbindungszeichenfolge erstellen
             conn = psycopg2.connect(
-                host="coffee_db_container",
-                port = 5432,
+                host="localhost",
                 database="coffee_db",
                 user="coffee_db_technical_user",
                 password="coffeedb")
