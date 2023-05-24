@@ -25,3 +25,11 @@ services:
       - DATABASE_URL=postgresql://coffee_db_technical_user:coffeedb@database:5432/coffee_db
     depends_on:
       - database
+
+  adminer:
+        image: adminer
+        restart: always
+        ports:
+            - 1234:8080
+        depends_on:
+            - "database"

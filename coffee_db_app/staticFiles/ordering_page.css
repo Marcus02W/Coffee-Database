@@ -1,3 +1,11 @@
+@font-face {
+  font-family: 'Coffe';
+  src: url('AdrenalinesDemoRegular.ttf') format('truetype');
+  /* Weitere Formate, z.B. woff, woff2, können hinzugefügt werden */
+}
+body {
+  font-family: 'Coffe', sans-serif;
+}
 .row {
   display: flex;
   align-items: center;
@@ -65,4 +73,12 @@
 
 .button-container button:hover {
   background-color: darkorange;
+}
+
+.header {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 20px;
+  height: 10%;
 }

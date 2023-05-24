@@ -1,4 +1,8 @@
-
+@font-face {
+  font-family: 'Coffe';
+  src: url('AdrenalinesDemoRegular.ttf') format('truetype');
+  /* Weitere Formate, z.B. woff, woff2, können hinzugefügt werden */
+}
 
 .right-section {
     flex: 1;
@@ -40,12 +44,20 @@ img {
   }
   
   body {
-    font-family: Arial, sans-serif;
+    font-family: 'Coffe', sans-serif;
     display: flex;
     flex-direction: row;
     height: 100vh;
   }
   
+  .header {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 20px;
+    height: 10%;
+}
+
   .left-section {
     background-color: #f1f1f1;
     display: flex;
