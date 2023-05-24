@@ -47,6 +47,10 @@ def loadCoffeeShopLanding():
 def loadOrderingPage():
     return render_template('ordering_page.html')
 
+@app.route("/ordering_details")
+def loadOrderingDetailsPage():
+    return render_template('ordering_details.html')
+
 
 # api's
 @app.route("/login_api_customer", methods=['POST'])
@@ -277,13 +281,13 @@ def coffee_shop_page_handling():
         result_dict["coffee_types_overview"] = result_coffee_types_overview
 
         # ratings
-        ratings_overview_query = f"select c.customer_firstname || '' || c.customer_lastname as customer_name, r.score from customers c join ratings r on c.customer_id = r.customer_id where r.shop_id = {data['username']} order by r.score desc limit 5;"
+        ratings_overview_query = f"select c.customer_firstname || '' || c.customer_lastname as customer_name, r.score from customers c join ratings r on c.customer_id = r.customer_id where r.shop_id = {data['username']} order by r.score limit 5;"
         cursor.execute(ratings_overview_query)
         result_ratings_overview = cursor.fetchall()
         result_dict["ratings_overview"] = result_ratings_overview
 
         # recent orders
-        recent_orders_overview_query = f"select o.order_id, o.order_date, c.customer_firstname || '' || c.customer_lastname as customer_name  from customers c join orders o on c.customer_id = o.customer_id where o.shop_id = {data['username']} order by o.order_date desc limit 5;"
+        recent_orders_overview_query = f"select o.order_id, o.order_date, c.customer_firstname || '' || c.customer_lastname as customer_name  from customers c join orders o on c.customer_id = o.customer_id where o.shop_id = {data['username']} order by o.order_date desc;"
         cursor.execute(recent_orders_overview_query)
         result_recent_orders_overview = cursor.fetchall()
         result_dict["recent_orders_overview"] = result_recent_orders_overview
@@ -323,6 +327,43 @@ def loadOrderingCoffeeTypes():
         
         coffee_types_query = f"select coffee_type, size from coffee_shops_coffee_types where shop_id = {data['shop_id']}" # coffee type query
         cursor.execute(coffee_types_query)
+        result = cursor.fetchall()
+        conn.commit()
+        cursor.close()
+        conn.close()
+
+        return result
+
+    
+    except:
+        return "unverified connection"
+    
+
+@app.route("/ordering_details_api", methods=['POST'])
+def loadOrderingDetails():
+    data = request.form
+
+    conn = psycopg2.connect(
+        host="localhost",
+        database="coffee_db",
+        user="coffee_db_technical_user",
+        password="coffeedb")
+    
+    cursor = conn.cursor()
+    
+    try:
+        ####### query has to be chaned to fit coffee shops instead of customers
+        # password query is always executed before any other query to check validity of login information!
+        sql_query = "SELECT * FROM shop_login WHERE shop_id="+data['username']+" AND shop_password='" + data['password'] + "'"
+        cursor.execute(sql_query)
+        result = cursor.fetchall()
+        if result is None:
+            return "unverified connection"
+        
+        
+        order_details_query = f"select coffee_type, size, number from orderitem where order_id = {data['order_id']}" # coffee type query
+        
+        cursor.execute(order_details_query)
         result = cursor.fetchall()
         conn.commit()
         cursor.close()

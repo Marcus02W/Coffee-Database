@@ -71,6 +71,20 @@ window.onload = () => {
                 tableCell.textContent = cell;
                 tableRow.appendChild(tableCell);
               });
+
+              tableCell = document.createElement('td');
+              var link = document.createElement('a');
+
+              // Set the href attribute
+              link.href = 'ordering_details?parameter=' + row[0];
+
+              // Set the link text
+              var linkText = document.createTextNode('View details');
+              link.appendChild(linkText);
+
+              tableCell.appendChild(link);
+
+              tableRow.appendChild(tableCell);
             
               tableBodyOrders.appendChild(tableRow);
             });
