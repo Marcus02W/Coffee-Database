@@ -22,6 +22,6 @@ services:
     environment:
       - FLASK_APP=backend.py
       - FLASK_RUN_HOST=0.0.0.0
-      - DATABASE_URL=postgresql://postgres:postgres@database:5432/coffee_db
+      - DATABASE_URL=postgresql://coffee_db_technical_user:coffeedb@database:5432/coffee_db
     depends_on:
       - database
