@@ -6,8 +6,8 @@ services:
       - '5433:5432'
     container_name: postgres-company
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: coffee_db_technical_user
+      POSTGRES_PASSWORD: coffeedb
       POSTGRES_DB: coffee_db
     volumes:
       - ./sql/start.sql:/docker-entrypoint-initdb.d/1-start.sql
