@@ -134,6 +134,10 @@ function processInputs() {
         if (xhr.readyState === 4){
             response = xhr.responseText;
             console.log(response)
+            document.getElementById("response").innerHTML="Your order has been sent and will be processed soon. You will get routed back to the overview page now."
+            setTimeout(() => {
+                window.location.href = '/customer_landing';
+              }, 3000);
         }
     }
 

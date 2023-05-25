@@ -467,7 +467,7 @@ def process_order():
     cursor.close()
     conn.close()
 
-    return str(insert_items_tuples)
+    return "success"
 
 
 
