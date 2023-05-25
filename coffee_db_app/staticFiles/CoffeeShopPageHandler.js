@@ -46,7 +46,11 @@ window.onload = () => {
                     formDataTypes.append("coffee_type", row[0]);
                     formDataTypes.append("shop_id", username);
                     xhr.send(formDataTypes);
-                    location.reload();
+                    xhr.onreadystatechange = () => {
+                      if (xhr.readyState === 2){
+                        location.reload();
+                      }
+                    }
                     
                   };
                   
