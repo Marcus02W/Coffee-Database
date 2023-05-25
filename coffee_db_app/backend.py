@@ -228,7 +228,7 @@ def customer_page_handling():
         result_dict["coffee_shops_overview"] = result_coffee_shops_overview
 
         # ratings
-        ratings_overview_query = f"select c.name, r.score from coffee_shops c join ratings r on c.shop_id = r.shop_id where r.customer_id = {data['username']} order by r.score desc limit 5;"
+        ratings_overview_query = f"select c.name, r.score from coffee_shops c join ratings r on c.shop_id = r.shop_id where r.customer_id = {data['username']} order by r.score limit 5;"
         cursor.execute(ratings_overview_query)
         result_ratings_overview = cursor.fetchall()
         result_dict["ratings_overview"] = result_ratings_overview
