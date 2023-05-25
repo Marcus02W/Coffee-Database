@@ -55,6 +55,7 @@ img {
     display: flex;
     flex-direction: column;
     padding: 1em;
+    width:50%;
   }
   
   h1 {
