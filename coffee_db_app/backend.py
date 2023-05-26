@@ -105,7 +105,7 @@ def handleSignup_customer():
     cursor = conn.cursor()
 
     try:
-        sql_query = "begin; insert into customers (customer_id, customer_firstname, customer_lastname) values (" + signup_info['username'] + ",'" + signup_info['firstname'] + "','" + signup_info['lastname'] + "'); insert into customer_login (customer_id, customer_password) values (" + signup_info['username'] + ",'" + signup_info['password'] + "'); commit;"
+        sql_query = "insert into customers (customer_id, customer_firstname, customer_lastname) values (" + signup_info['username'] + ",'" + signup_info['firstname'] + "','" + signup_info['lastname'] + "'); insert into customer_login (customer_id, customer_password) values (" + signup_info['username'] + ",'" + signup_info['password'] + "');"
         cursor.execute(sql_query)
         
         isvalid=True
@@ -175,7 +175,7 @@ def handleSignup_coffe_shop():
     cursor = conn.cursor()
 
     try:
-        sql_query = "begin; insert into coffee_shops (shop_id, name, city, adress, owner_firstname, owner_lastname) values (" + signup_info['shop_id'] + ",'" + signup_info['name'] + "','" + signup_info['city'] + "','" + signup_info['adress'] + "','"+  signup_info['owner_firstname'] + "','" + signup_info['owner_lastname'] + "'); insert into shop_login (shop_id, shop_password) values (" + signup_info['shop_id'] + ",'" + signup_info['password'] + "'); commit;"
+        sql_query = "insert into coffee_shops (shop_id, name, city, adress, owner_firstname, owner_lastname) values (" + signup_info['shop_id'] + ",'" + signup_info['name'] + "','" + signup_info['city'] + "','" + signup_info['adress'] + "','"+  signup_info['owner_firstname'] + "','" + signup_info['owner_lastname'] + "'); insert into shop_login (shop_id, shop_password) values (" + signup_info['shop_id'] + ",'" + signup_info['password'] + "');"
         cursor.execute(sql_query)
         
         isvalid=True
