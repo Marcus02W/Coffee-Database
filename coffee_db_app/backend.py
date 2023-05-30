@@ -281,7 +281,7 @@ def coffee_shop_page_handling():
 
 
         # coffee shops overview
-        coffee_types_overview_query = f"SELECT ct.coffee_type, ct.size, false AS is_not_null FROM coffee_types ct WHERE NOT EXISTS (SELECT 1 FROM coffee_shops_coffee_types rel WHERE ct.coffee_type = rel.coffee_type AND ct.size = rel.size AND rel.shop_id = {data['username']}) UNION SELECT ct.coffee_type, ct.size, CASE WHEN rel.coffee_type IS NOT NULL AND rel.size IS NOT NULL THEN true ELSE false END AS is_not_null FROM coffee_types ct LEFT JOIN coffee_shops_coffee_types rel ON ct.coffee_type = rel.coffee_type AND ct.size = rel.size WHERE rel.shop_id = {data['username']} ORDER BY coffee_type asc, size desc;"
+        coffee_types_overview_query = f"SELECT ct.coffee_type, ct.size, false AS is_not_null FROM coffee_types ct WHERE NOT EXISTS (SELECT 1 FROM coffee_shops_coffee_types rel WHERE ct.coffee_type = rel.coffee_type AND ct.size = rel.size AND rel.shop_id = {data['username']}) UNION (SELECT rel.coffee_type, rel.size, true AS is_not_null FROM coffee_shops_coffee_types rel WHERE rel.shop_id = {data['username']}) ORDER BY coffee_type asc, size desc;"
         cursor.execute(coffee_types_overview_query)
         result_coffee_types_overview = cursor.fetchall()
         result_dict["coffee_types_overview"] = result_coffee_types_overview
