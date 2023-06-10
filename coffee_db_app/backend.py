@@ -7,6 +7,8 @@ import json
 
 app = Flask(__name__, template_folder='templateFiles', static_folder='staticFiles')
 
+
+### frontend page routes ###
 @app.route('/')
 def index():
     return redirect('/start', code=301)
@@ -52,14 +54,16 @@ def loadOrderingDetailsPage():
     return render_template('ordering_details.html')
 
 
-# api's
+
+### api's (backend handling) ###
+
+# check login of customer
 @app.route("/login_api_customer", methods=['POST'])
 def handleLogin_customer():
     isvalid = False
     login_info = request.form
 
-    # checking validity
-    # Verbindungszeichenfolge erstellen
+    
     conn = psycopg2.connect(
         host="coffee_db_container",
         port = 5432,
@@ -69,9 +73,9 @@ def handleLogin_customer():
     
     cursor = conn.cursor()
     
+    # checking validity of user
     try:
         sql_query = "SELECT * FROM customer_login WHERE customer_login.customer_id='"+login_info['username']+"' AND customer_login.customer_password='" + login_info['password'] + "'"
-        #login_data = pd.read_sql_query(sql_query, conn)
         cursor.execute(sql_query)
         result = cursor.fetchone()
         conn.commit()
@@ -87,14 +91,12 @@ def handleLogin_customer():
 
 
     
-
+# registering a new customer
 @app.route("/signup_api_customer", methods=['POST'])
 def handleSignup_customer():
     isvalid = False
     signup_info = request.form
 
-    # checking validity
-    # Verbindungszeichenfolge erstellen
     conn = psycopg2.connect(
         host="coffee_db_container",
         port = 5432,
@@ -122,14 +124,12 @@ def handleSignup_customer():
         return "failed"
 
 
-
+# check log in of coffee shops
 @app.route("/login_api_coffee_shop", methods=['POST'])
 def handleLogin_coffe_shop():
     isvalid = False
     login_info = request.form
 
-    # checking validity
-    # Verbindungszeichenfolge erstellen
     conn = psycopg2.connect(
         host="coffee_db_container",
         port = 5432,
@@ -141,7 +141,6 @@ def handleLogin_coffe_shop():
     
     try:
         sql_query = "SELECT * FROM shop_login WHERE shop_id='"+login_info['username']+"' AND shop_password='" + login_info['password'] + "'"
-        #login_data = pd.read_sql_query(sql_query, conn)
         cursor.execute(sql_query)
         result = cursor.fetchone()
         conn.commit()
@@ -157,7 +156,7 @@ def handleLogin_coffe_shop():
 
 
     
-
+# registering a new coffee shop
 @app.route("/signup_api_coffee_shop", methods=['POST'])
 def handleSignup_coffe_shop():
     isvalid = False
@@ -175,7 +174,7 @@ def handleSignup_coffe_shop():
     cursor = conn.cursor()
 
     try:
-        sql_query = "insert into coffee_shops (shop_id, name, city, adress, owner_firstname, owner_lastname) values (" + signup_info['shop_id'] + ",'" + signup_info['name'] + "','" + signup_info['city'] + "','" + signup_info['adress'] + "','"+  signup_info['owner_firstname'] + "','" + signup_info['owner_lastname'] + "'); insert into shop_login (shop_id, shop_password) values (" + signup_info['shop_id'] + ",'" + signup_info['password'] + "');"
+        sql_query = "insert into coffee_shops (shop_id, name, country, city, street, owner_firstname, owner_lastname) values (" + signup_info['shop_id'] + ",'" + signup_info['name'] + "','" + signup_info['country'] + "','" + signup_info['city'] + "','" + signup_info['street'] + "','"+  signup_info['owner_firstname'] + "','" + signup_info['owner_lastname'] + "'); insert into shop_login (shop_id, shop_password) values (" + signup_info['shop_id'] + ",'" + signup_info['password'] + "');"
         cursor.execute(sql_query)
         
         isvalid=True
@@ -191,7 +190,7 @@ def handleSignup_coffe_shop():
     else:
         return "failed"
     
-
+# backend handling of all customer overview page functionalities
 @app.route("/customer_page_api", methods=['POST'])
 def customer_page_handling():
         
@@ -221,7 +220,7 @@ def customer_page_handling():
         result_dict=dict()
 
 
-        # coffee shops overview (# FIX NEEDED)
+        # coffee shops overview
         coffee_shops_overview_query = f"select c.shop_id, c.name, c.city, r.score, round(average_rating_mat.average_score, 1) from (coffee_shops c left join ratings r  on c.shop_id = r.shop_id) left join average_rating_mat on average_rating_mat.shop_id = c.shop_id where r.customer_id = {data['username']} order by r.score desc;"
         cursor.execute(coffee_shops_overview_query)
         result_coffee_shops_overview = cursor.fetchall()
@@ -250,7 +249,7 @@ def customer_page_handling():
         return "unverified connection"
     
 
-
+# backend handling of all coffee shop overview page functionalities
 @app.route("/coffee_shop_page_api", methods=['POST'])
 def coffee_shop_page_handling():
         
@@ -267,8 +266,7 @@ def coffee_shop_page_handling():
     cursor = conn.cursor()
     
     try:
-            ####### query has to be chaned to fit coffee shops instead of customers
-            # password query is always executed before any other query to check validity of login information!
+        # password query is always executed before any other query to check validity of login information!
         sql_query = "SELECT * FROM shop_login WHERE shop_id="+data['username']+" AND shop_password='" + data['password'] + "'"
         cursor.execute(sql_query)
         result = cursor.fetchall()
@@ -303,13 +301,14 @@ def coffee_shop_page_handling():
         cursor.close()
         conn.close()
 
-    ### return value here has to be changed
         return result_dict
 
     except:
 
         return "unverified connection"
-    
+
+
+# api for returning the order details
 @app.route("/ordering_page_api", methods=['POST'])
 def loadOrderingCoffeeTypes():
     data = request.form
@@ -324,9 +323,8 @@ def loadOrderingCoffeeTypes():
     cursor = conn.cursor()
     
     try:
-        ####### query has to be chaned to fit coffee shops instead of customers
         # password query is always executed before any other query to check validity of login information!
-        sql_query = "SELECT * FROM shop_login WHERE shop_id="+data['username']+" AND shop_password='" + data['password'] + "'"
+        sql_query = "SELECT * FROM customer_login WHERE customer_id="+data['username']+" AND customer_password='" + data['password'] + "'"
         cursor.execute(sql_query)
         result = cursor.fetchall()
         if result is None:
@@ -344,8 +342,9 @@ def loadOrderingCoffeeTypes():
     
     except:
         return "unverified connection"
-    
 
+
+# api for returning the details of an order so that a coffee shop can see what has been ordered exactly
 @app.route("/ordering_details_api", methods=['POST'])
 def loadOrderingDetails():
     data = request.form
@@ -360,7 +359,6 @@ def loadOrderingDetails():
     cursor = conn.cursor()
     
     try:
-        ####### query has to be chaned to fit coffee shops instead of customers
         # password query is always executed before any other query to check validity of login information!
         sql_query = "SELECT * FROM shop_login WHERE shop_id="+data['username']+" AND shop_password='" + data['password'] + "'"
         cursor.execute(sql_query)
@@ -383,7 +381,10 @@ def loadOrderingDetails():
     except:
         return "unverified connection"
 
-    
+
+
+## insertion queries ##
+# api for updating an existing or inserting a new rating
 @app.route("/rating_update_api", methods=['POST'])
 def update_rating():
     data = request.form
@@ -404,6 +405,7 @@ def update_rating():
 
     return "success"
 
+# api for updating the offered coffee types by a specific coffee shop
 @app.route("/coffee_types_update_api", methods=['POST'])
 def update_coffee_types():
     data = request.form
@@ -427,6 +429,7 @@ def update_coffee_types():
     return "success"
 
 
+# api for inserting a new order into the database system
 @app.route("/order_processing_api", methods=['POST'])
 def process_order():
     data = request.form
@@ -471,10 +474,11 @@ def process_order():
 
 
 
+# admin page sql queries (see query documentation for more information)
 @app.route("/sql_abfrage", methods=["POST"])
 def sql():
         sql_querry =request.form["querry"]
-        # Verbindungszeichenfolge erstellen
+
         conn = psycopg2.connect(
             host="coffee_db_container",
             port = 5432,
@@ -490,7 +494,7 @@ def sql():
 def sql_tabel():
         sql_querry =request.form["drop"]
         if sql_querry!="none":
-            # Verbindungszeichenfolge erstellen
+
             conn = psycopg2.connect(
                 host="coffee_db_container",
                 port = 5432,

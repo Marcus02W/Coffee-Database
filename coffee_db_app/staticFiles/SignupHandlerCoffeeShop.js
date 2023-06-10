@@ -3,6 +3,7 @@ function signup(){
     const formData = new FormData();
     var id = document.getElementById("id").value;
     var name = document.getElementById("name").value;
+    var country = document.getElementById("country").value;
     var city = document.getElementById("city").value;
     var adress = document.getElementById("adress").value;
     var firstname = document.getElementById("owner_firstname").value;
@@ -11,8 +12,9 @@ function signup(){
 
     formData.append("shop_id", id);
     formData.append("name", name);
+    formData.append("country", country);
     formData.append("city", city);
-    formData.append("adress", adress);
+    formData.append("street", adress);
     formData.append("owner_firstname", firstname);
     formData.append("owner_lastname", lastname);
     formData.append("password", password);

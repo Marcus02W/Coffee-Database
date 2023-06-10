@@ -30,20 +30,21 @@ window.onload = () => {
             // Get the table container element
             var tableContainer = document.getElementById("tableContainer");
   
-            // Create rows and cells based on the data
+            // backend response is parsed into a HTML table format
             response.forEach(function(rowData) {
-                // Create a row element
+
+                // Creating row element
                 var row = document.createElement("div");
                 row.classList.add("row");
             
-                // Create cell elements for each data item
+                // Creating cell elements for rows
                 rowData.forEach(function(cellData) {
                 var cell = document.createElement("div");
                 cell.textContent = cellData;
                 row.appendChild(cell);
                 });
             
-                // Create the quantity control element
+                // Creating the quantity control element
                 var quantityControl = document.createElement("div");
                 quantityControl.classList.add("quantity-control");
             
@@ -62,8 +63,10 @@ window.onload = () => {
             
                 row.appendChild(quantityControl);
             
-                // Append the row to the table container
+
+                // Appending row to the table
                 tableContainer.appendChild(row);
+
 
                 // Event listener for minus button
                 minusButton.addEventListener("click", function() {
@@ -72,6 +75,7 @@ window.onload = () => {
                     quantityInput.value = currentQuantity - 1;
                     }
                 });
+
 
                 // Event listener for plus button
                 plusButton.addEventListener("click", function() {
@@ -86,7 +90,8 @@ window.onload = () => {
         
     }
 }
-// Function to process the user inputs
+
+// Function to process the user inputs (this function executes the order and sends all the required details to the backend)
 function processInputs() {
     var rows = document.getElementsByClassName("row");
     const orderItemsData = new FormData();

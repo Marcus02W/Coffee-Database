@@ -26,13 +26,15 @@ window.onload = () => {
             response = JSON.parse(response);
             console.log(response);
 
-            const tableBody = document.getElementById('table'); // Select the table body element
+            // === part for building the logic behind the ordering details table ===
+            const tableBody = document.getElementById('table');
 
+            // backend response is parsed into a HTML table format
             response.forEach((row) => {
-              const tableRow = document.createElement('tr'); // Create a table row element
+              const tableRow = document.createElement('tr'); 
             
               row.forEach((cell) => {
-                const tableCell = document.createElement('td'); // Create a table cell element
+                const tableCell = document.createElement('td'); 
                 tableCell.textContent = cell;
                 tableRow.appendChild(tableCell);
               });

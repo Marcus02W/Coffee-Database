@@ -1,6 +1,8 @@
 window.onload = () => {
-    console.log(document.cookie);
+    //console.log(document.cookie);
     const formData = new FormData();
+
+    // accessing the login credentials from the cookie
     var username = document.cookie
                     .split("; ")
                     .find((row) => row.startsWith("username="))
@@ -22,21 +24,22 @@ window.onload = () => {
             response = JSON.parse(response);
             console.log(response);
 
+            // === part for building the logic behind the left section (coffee type offerings) ===
+            const tableBody = document.getElementById('table-coffee-offerings');
 
-            const tableBody = document.getElementById('table-coffee-offerings'); // Select the table body element
-
+            // backend response is parsed into a HTML table format
             response['coffee_types_overview'].forEach((row) => {
-              const tableRow = document.createElement('tr'); // Create a table row element
+              const tableRow = document.createElement('tr');
             
               row.forEach((cell, index) => {
-                const tableCell = document.createElement('td'); // Create a table cell element
+                const tableCell = document.createElement('td');
 
+                // the second cell is clickable so that coffee shops can easily change their offering by a mouseclick
                 if (index === 2) { 
-                  const clickableCell = document.createElement('td'); // Create a new table cell for the clickable element
-                  clickableCell.textContent = cell; // Set the text content of the clickable cell
+                  const clickableCell = document.createElement('td');
+                  clickableCell.textContent = cell;
                   
                   clickableCell.onclick = function() {
-                    // Your onclick function logic goes here
                     console.log(row[0], row[1], row[2]);
                     const formDataTypes = new FormData();
                     var xhr = new XMLHttpRequest();
@@ -65,24 +68,29 @@ window.onload = () => {
               tableBody.appendChild(tableRow);
             });
 
-            const tableBodyOrders = document.getElementById('table-recent-orders'); // Select the table body element
 
+            // === part for building the logic behind the top right section (recent orders) ===
+            const tableBodyOrders = document.getElementById('table-recent-orders');
+
+            // backend response is parsed into a HTML table format
             response['recent_orders_overview'].forEach((row) => {
-              const tableRow = document.createElement('tr'); // Create a table row element
+              const tableRow = document.createElement('tr');
             
               row.forEach((cell) => {
-                const tableCell = document.createElement('td'); // Create a table cell element
+                const tableCell = document.createElement('td');
                 tableCell.textContent = cell;
                 tableRow.appendChild(tableCell);
               });
+              
 
+              // creating link for viewing ordering details
               tableCell = document.createElement('td');
               var link = document.createElement('a');
 
-              // Set the href attribute
+              // dynamically insert order_id by row[0]
               link.href = 'ordering_details?parameter=' + row[0];
 
-              // Set the link text
+            
               var linkText = document.createTextNode('View details');
               link.appendChild(linkText);
 
@@ -93,13 +101,16 @@ window.onload = () => {
               tableBodyOrders.appendChild(tableRow);
             });
 
-            const tableBodyRatings = document.getElementById('table-ratings'); // Select the table body element
 
+            // === part for building the logic behind the bottom right section (most critical ratings) ===
+            const tableBodyRatings = document.getElementById('table-ratings');
+
+            // backend response is parsed into a HTML table format
             response['ratings_overview'].forEach((row) => {
-              const tableRow = document.createElement('tr'); // Create a table row element
+              const tableRow = document.createElement('tr');
             
               row.forEach((cell) => {
-                const tableCell = document.createElement('td'); // Create a table cell element
+                const tableCell = document.createElement('td');
                 tableCell.textContent = cell;
                 tableRow.appendChild(tableCell);
               });

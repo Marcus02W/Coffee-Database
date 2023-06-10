@@ -1,5 +1,7 @@
 window.onload = () => {
     const formData = new FormData();
+
+    // accessing the login credentials from the cookie
     var username = document.cookie
                     .split("; ")
                     .find((row) => row.startsWith("username="))
@@ -23,16 +25,18 @@ window.onload = () => {
             response = JSON.parse(response);
             console.log(response);
 
-            const tableBody = document.getElementById('table-coffee-shops'); // Select the table body element
 
-            // Helper function to create a star element
+            // === part for building the logic behind the left section (coffee shops overview with rating functionality and ordering link) ===
+            const tableBody = document.getElementById('table-coffee-shops');
+
+            // function to create a star element
             function createStar(index, shop_id) {
               const star = document.createElement('span');
               star.classList.add('star');
               star.classList.add('gray');
               star.addEventListener('click', function() {
                 const rating = index + 1;
-                console.log(rating, shop_id); // Output the rating value to the console
+                //console.log(rating, shop_id);
 
                 const formDataRating = new FormData();
                 formDataRating.append("customer_id", username);
@@ -50,6 +54,8 @@ window.onload = () => {
               return star;
             }
 
+
+            // backend response is parsed into a HTML table format
             response['coffee_shops_overview'].forEach((row) => {
               const tableRow = document.createElement('tr');
 
@@ -60,14 +66,14 @@ window.onload = () => {
                   return;
                 }
                   
-                else if (index === 3) { // Check if it's the score cell
+                else if (index === 3) { // Identifying the score cell
                   const starsContainer = document.createElement('div');
                   starsContainer.classList.add('stars-container');
 
                   // Determine the rating value (number of golden stars)
                   const rating = cell ? parseInt(cell) : 0;
 
-                  // Create 5 stars, coloring the golden ones based on the rating
+                  // Creating 5 stars, coloring the golden ones based on the rating
                   for (let i = 0; i < 5; i++) {
                     const star = createStar(i, row[0]);
                     if (i < rating) {
@@ -84,13 +90,14 @@ window.onload = () => {
 
                 tableRow.appendChild(tableCell);
               });
+
+              // link for ordering is created in this part
               tableCell = document.createElement('td');
               var link = document.createElement('a');
 
-              // Set the href attribute
-              link.href = 'ordering_page?parameter=' + row[0];
+              // creating dynamic link for ordering at a specific coffee shop
+              link.href = 'ordering_page?parameter=' + row[0]; // with row[0] the shop_id is appended to the url
 
-              // Set the link text
               var linkText = document.createTextNode('Order now');
               link.appendChild(linkText);
 
@@ -103,13 +110,15 @@ window.onload = () => {
 
 
 
-            const tableBodyOrders = document.getElementById('table-recent-orders'); // Select the table body element
+            // === part for building the logic behind the top right section (recent orders) ===
+            const tableBodyOrders = document.getElementById('table-recent-orders');
 
+            // backend response is parsed into a HTML table format
             response['recent_orders_overview'].forEach((row) => {
-              const tableRow = document.createElement('tr'); // Create a table row element
+              const tableRow = document.createElement('tr');
             
               row.forEach((cell) => {
-                const tableCell = document.createElement('td'); // Create a table cell element
+                const tableCell = document.createElement('td');
                 tableCell.textContent = cell;
                 tableRow.appendChild(tableCell);
               });
@@ -117,13 +126,17 @@ window.onload = () => {
               tableBodyOrders.appendChild(tableRow);
             });
 
-            const tableBodyRatings = document.getElementById('table-ratings'); // Select the table body element
 
+
+            // === part for building the logic behind the bottom right section (most critical ratings) ===
+            const tableBodyRatings = document.getElementById('table-ratings');
+
+            // backend response is parsed into a HTML table format
             response['ratings_overview'].forEach((row) => {
-              const tableRow = document.createElement('tr'); // Create a table row element
+              const tableRow = document.createElement('tr'); 
             
               row.forEach((cell) => {
-                const tableCell = document.createElement('td'); // Create a table cell element
+                const tableCell = document.createElement('td');
                 tableCell.textContent = cell;
                 tableRow.appendChild(tableCell);
               });

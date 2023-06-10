@@ -19,7 +19,9 @@ function login(){
             } 
 
             else{
-                response = JSON.parse(response); // important for being able to access resposne values properly
+                response = JSON.parse(response);
+
+                // setting a cookie based on login credentials to verify validity of user in other pages
                 document.cookie = "username="+response['username'];
                 document.cookie = "password="+response['password'];
                 console.log(document.cookie);
@@ -28,7 +30,6 @@ function login(){
                     window.location.href = '/customer_landing';
                   }, 1000);
                 
-                //abspeichern von Login Info in Session Cookie noch einfügen
             } 
         }
     }
