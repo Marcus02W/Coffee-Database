@@ -3,7 +3,7 @@ services:
   database:
     image: 'postgres:12.3'
     ports:
-      - '9000:5432'
+      - '9001:5432'
     container_name: coffee_db_container
     environment:
       POSTGRES_USER: coffee_db_technical_user
@@ -22,6 +22,6 @@ services:
     environment:
       - FLASK_APP=backend.py
       - FLASK_RUN_HOST=0.0.0.0
-      - DATABASE_URL=postgresql://coffee_db_technical_user:coffeedb@database:9000/coffee_db
+      - DATABASE_URL=postgresql://coffee_db_technical_user:coffeedb@database:9001/coffee_db
     depends_on:
       - database
