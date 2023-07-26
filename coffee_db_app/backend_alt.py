@@ -65,9 +65,9 @@ def handleLogin_customer():
     login_info = request.form
 
     
-    conn = pymysql.connect(
+    conn = psycopg2.connect(
         host="coffee_db_container",
-        port=3306,
+        port = 5432,
         database="coffee_db",
         user="coffee_db_technical_user",
         password="coffeedb")
@@ -98,9 +98,9 @@ def handleSignup_customer():
     isvalid = False
     signup_info = request.form
 
-    conn = pymysql.connect(
+    conn = psycopg2.connect(
         host="coffee_db_container",
-        port=3306,
+        port = 5432,
         database="coffee_db",
         user="coffee_db_technical_user",
         password="coffeedb")
@@ -131,9 +131,9 @@ def handleLogin_coffe_shop():
     isvalid = False
     login_info = request.form
 
-    conn = pymysql.connect(
+    conn = psycopg2.connect(
         host="coffee_db_container",
-        port=3306,
+        port = 5432,
         database="coffee_db",
         user="coffee_db_technical_user",
         password="coffeedb")
@@ -165,9 +165,9 @@ def handleSignup_coffe_shop():
 
     # checking validity
     # Verbindungszeichenfolge erstellen
-    conn = pymysql.connect(
+    conn = psycopg2.connect(
         host="coffee_db_container",
-        port=3306,
+        port = 5432,
         database="coffee_db",
         user="coffee_db_technical_user",
         password="coffeedb")
@@ -198,9 +198,9 @@ def customer_page_handling():
 
     data = request.form
 
-    conn = pymysql.connect(
+    conn = psycopg2.connect(
         host="coffee_db_container",
-        port=3306,
+        port = 5432,
         database="coffee_db",
         user="coffee_db_technical_user",
         password="coffeedb")
@@ -257,9 +257,9 @@ def coffee_shop_page_handling():
 
     data = request.form
 
-    conn = pymysql.connect(
+    conn = psycopg2.connect(
         host="coffee_db_container",
-        port=3306,
+        port = 5432,
         database="coffee_db",
         user="coffee_db_technical_user",
         password="coffeedb")
@@ -314,9 +314,9 @@ def coffee_shop_page_handling():
 def loadOrderingCoffeeTypes():
     data = request.form
 
-    conn = pymysql.connect(
+    conn = psycopg2.connect(
         host="coffee_db_container",
-        port=3306,
+        port = 5432,
         database="coffee_db",
         user="coffee_db_technical_user",
         password="coffeedb")
@@ -350,9 +350,9 @@ def loadOrderingCoffeeTypes():
 def loadOrderingDetails():
     data = request.form
 
-    conn = pymysql.connect(
+    conn = psycopg2.connect(
         host="coffee_db_container",
-        port=3306,
+        port = 5432,
         database="coffee_db",
         user="coffee_db_technical_user",
         password="coffeedb")
@@ -389,9 +389,9 @@ def loadOrderingDetails():
 @app.route("/rating_update_api", methods=['POST'])
 def update_rating():
     data = request.form
-    conn = pymysql.connect(
+    conn = psycopg2.connect(
         host="coffee_db_container",
-        port=3306,
+        port = 5432,
         database="coffee_db",
         user="coffee_db_technical_user",
         password="coffeedb")
@@ -410,9 +410,9 @@ def update_rating():
 @app.route("/coffee_types_update_api", methods=['POST'])
 def update_coffee_types():
     data = request.form
-    conn = pymysql.connect(
+    conn = psycopg2.connect(
         host="coffee_db_container",
-        port=3306,
+        port = 5432,
         database="coffee_db",
         user="coffee_db_technical_user",
         password="coffeedb")
@@ -439,9 +439,9 @@ def process_order():
 
     current_date = date.today().strftime("%Y%m%d")
 
-    conn = pymysql.connect(
+    conn = psycopg2.connect(
         host="coffee_db_container",
-        port=3306,
+        port = 5432,
         database="coffee_db",
         user="coffee_db_technical_user",
         password="coffeedb")
@@ -480,9 +480,9 @@ def process_order():
 def sql():
         sql_querry =request.form["querry"]
 
-        conn = pymysql.connect(
+        conn = psycopg2.connect(
             host="coffee_db_container",
-            port=3306,
+            port = 5432,
             database="coffee_db",
             user="coffee_db_technical_user",
             password="coffeedb")
@@ -496,9 +496,9 @@ def sql_tabel():
         sql_querry =request.form["drop"]
         if sql_querry!="none":
 
-            conn = pymysql.connect(
+            conn = psycopg2.connect(
                 host="coffee_db_container",
-                port=3306,
+                port = 5432,
                 database="coffee_db",
                 user="coffee_db_technical_user",
                 password="coffeedb")
@@ -513,9 +513,9 @@ def sql_tabel():
 @app.route("/sql_drop_req", methods=["POST"])
 def sql_drop_req():
     drop_req =request.form["drop_req"]
-    conn = pymysql.connect(
+    conn = psycopg2.connect(
         host="coffee_db_container",
-        port=3306,
+        port = 5432,
         database="coffee_db",
         user="coffee_db_technical_user",
         password="coffeedb")
