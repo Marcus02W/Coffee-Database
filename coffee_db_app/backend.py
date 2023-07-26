@@ -522,12 +522,12 @@ def sql_drop_req():
     
     if drop_req != "none":
         if drop_req == "AVG-Rating-Mat-view":
-            sql_querry="SELECT * FROM public.average_rating_mat;"
+            sql_querry="SELECT * FROM average_rating_mat;"
             df = pd.read_sql_query(sql_querry, conn)
             conn.close()
             html_df=df.to_html()
         elif drop_req == "worst-rating":
-            sql_querry = "SELECT * FROM public.worst_shop_ratings;"
+            sql_querry = "SELECT * FROM worst_shop_ratings;"
             df = pd.read_sql_query(sql_querry, conn)
             conn.close()
             html_df=df.to_html()   

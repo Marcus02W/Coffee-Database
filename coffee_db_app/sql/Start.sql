@@ -1,6 +1,3 @@
-BEGIN;
-
-
 CREATE TABLE IF NOT EXISTS coffee_shops
 (
     shop_id integer NOT NULL,
@@ -46,7 +43,7 @@ CREATE TABLE IF NOT EXISTS orderitem
 (
     coffee_type VARCHAR(255) NOT NULL,
     size VARCHAR(255) NOT NULL,
-    "number" integer,
+    `number` integer,
     order_id integer NOT NULL,
     CONSTRAINT orderitem_pkey PRIMARY KEY (coffee_type, size, order_id)
 );
@@ -143,5 +140,3 @@ ALTER TABLE IF EXISTS shop_login
     REFERENCES coffee_shops (shop_id) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION;
-
-END;

@@ -1,16 +1,18 @@
--- Creating a materialized view named "average_rating_mat" in the "public" schema.
+-- Creating a view named "average_rating_mat" in the "public" schema.
 -- This view calculates the average rating (average_score) for each coffee shop (shop_name).
-CREATE OR REPLACE VIEW average_rating_mat AS
+CREATE VIEW average_rating_mat
+AS
 SELECT 
-    cs.shop_id AS shop_id,
-    cs.name AS shop_name, 
-    AVG(r.score) AS average_score
+    coffee_shops.shop_id, 
+    coffee_shops.name, 
+    AVG(ratings.score) as average_score
 FROM 
-    coffee_shops cs
+    coffee_shops
 JOIN 
-    ratings r ON cs.shop_id = r.shop_id
+    ratings ON coffee_shops.shop_id = ratings.shop_id
 GROUP BY 
-    cs.shop_id;
+    coffee_shops.shop_id;
+-- Done
 
 -- Creating or replacing a view named "worst_shop_ratings" in the "public" schema.
 -- This view shows the minimum rating (rating) given by each customer (customer_firstname, customer_lastname) to each coffee shop (shop_name).
