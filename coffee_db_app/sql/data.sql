@@ -676,3 +676,6 @@ INSERT INTO coffee_shops_coffee_types (shop_id, coffee_type, size) VALUES (7, 'A
 INSERT INTO coffee_shops_coffee_types (shop_id, coffee_type, size) VALUES (8, 'Affogato', 'L');
 INSERT INTO coffee_shops_coffee_types (shop_id, coffee_type, size) VALUES (9, 'Affogato', 'L');
 INSERT INTO coffee_shops_coffee_types (shop_id, coffee_type, size) VALUES (10, 'Affogato', 'L');
+
+INSERT INTO big_data (coffee_type, size, score, batch_time)
+VALUES ('Espresso', 'Small', 90, 5);

@@ -140,3 +140,12 @@ ALTER TABLE IF EXISTS shop_login
     REFERENCES coffee_shops (shop_id) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION;
+
+CREATE TABLE big_data (
+    coffee_type VARCHAR(255),
+    size VARCHAR(255),
+    score INT,
+    batch_time INT,
+    PRIMARY KEY (coffee_type, size, batch_time)
+);
+

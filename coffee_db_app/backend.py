@@ -486,10 +486,20 @@ def sql():
             database="coffee_db",
             user="coffee_db_technical_user",
             password="coffeedb")
-        df = pd.read_sql_query(sql_querry, conn)
-        conn.close()
-        html_df=df.to_html()
-        return html_df
+        
+        if sql_querry.strip().upper().startswith("SELECT"):
+            df = pd.read_sql_query(sql_querry, conn)
+            conn.close()
+            html_df=df.to_html()
+            return html_df
+        else:
+            try:
+                with conn.cursor() as cursor:
+                    cursor.execute(sql_querry)
+                conn.commit()
+            finally:
+                conn.close()
+            return "Query executed."
 
 @app.route("/sql_abfrage_tabel", methods=["POST"])
 def sql_tabel():
