@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, jsonify
 import psycopg2
 import pandas as pd
 from datetime import datetime, date
@@ -338,7 +338,7 @@ def loadOrderingCoffeeTypes():
         cursor.close()
         conn.close()
 
-        return result
+        return jsonify(result)
 
     
     except:
