@@ -81,6 +81,7 @@ window.onload = () => {
                 plusButton.addEventListener("click", function() {
                     var currentQuantity = parseInt(quantityInput.value);
                     quantityInput.value = currentQuantity + 1;
+                    console.log('Plus button clicked. Current quantity:', quantityInput.value);
                 });
             });
         }
@@ -112,7 +113,7 @@ function processInputs() {
         //console.log("Row " + (i + 1) + " data:", rowData);
 
         order_items_list.push(rowData);
-
+        console.log('inkrement order items list:', order_items_list);
         
 
 
@@ -126,12 +127,18 @@ function processInputs() {
     var parameterValue = searchParams.get('parameter');
     console.log(order_items_list);
 
+    console.log('finalorder items list:', order_items_list);
+
     var jsonOrderItems = JSON.stringify(order_items_list);
+
+    console.log('finalorder jsonOrderItems:', jsonOrderItems);
 
     orderItemsData.append("order_items", jsonOrderItems);
     orderItemsData.append("customer_id", username);
     orderItemsData.append("shop_id", parameterValue);
 
+    console.log('Sending orderItemsData:', orderItemsData);
+    
     var xhr = new XMLHttpRequest();
     xhr.open("POST", "/order_processing_api");
     xhr.send(orderItemsData);
@@ -142,7 +149,7 @@ function processInputs() {
             document.getElementById("response").innerHTML="Your order has been sent and will be processed soon. You will get routed back to the overview page now."
             setTimeout(() => {
                 window.location.href = '/customer_landing';
-              }, 3000);
+              }, 30000);
         }
     }
 

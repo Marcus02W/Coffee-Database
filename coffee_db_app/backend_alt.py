@@ -368,7 +368,7 @@ def loadOrderingDetails():
             return "unverified connection"
         
         
-        order_details_query = f"select coffee_type, size, number from orderitem where order_id = {data['order_id']}" # coffee type query
+        order_details_query = f"select coffee_type, size, nummer from orderitem where order_id = {data['order_id']}" # coffee type query
         
         cursor.execute(order_details_query)
         result = cursor.fetchall()
@@ -464,7 +464,7 @@ def process_order():
 
     # insertion queries
     insertion_query = f"""insert into orders (order_id, shop_id, customer_id, order_date) values ({last_id_value+1}, {data['shop_id']}, {data['customer_id']}, {current_date});
-                          insert into orderitem (coffee_type, size, number, order_id) values {insert_items_tuples};"""
+                          insert into orderitem (coffee_type, size, nummer, order_id) values {insert_items_tuples};"""
 
     cursor.execute(insertion_query)
     conn.commit()

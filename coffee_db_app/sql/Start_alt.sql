@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS public.orderitem
 (
     coffee_type character varying COLLATE pg_catalog."default" NOT NULL,
     size character varying COLLATE pg_catalog."default" NOT NULL,
-    "number" integer,
+    nummer integer,
     order_id integer NOT NULL,
     CONSTRAINT orderitem_pkey PRIMARY KEY (coffee_type, size, order_id)
 );

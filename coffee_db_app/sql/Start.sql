@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS orderitem
 (
     coffee_type VARCHAR(255) NOT NULL,
     size VARCHAR(255) NOT NULL,
-    `number` integer,
+    nummer integer,
     order_id integer NOT NULL,
     CONSTRAINT orderitem_pkey PRIMARY KEY (coffee_type, size, order_id)
 );

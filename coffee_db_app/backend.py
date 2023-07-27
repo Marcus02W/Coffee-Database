@@ -367,8 +367,7 @@ def loadOrderingDetails():
         if result is None:
             return "unverified connection"
         
-        
-        order_details_query = f"select coffee_type, size, number from orderitem where order_id = {data['order_id']}" # coffee type query
+        order_details_query = f"select coffee_type, size, nummer from orderitem where order_id = {data['order_id']}" # coffee type query
         
         cursor.execute(order_details_query)
         result = cursor.fetchall()
@@ -376,7 +375,7 @@ def loadOrderingDetails():
         cursor.close()
         conn.close()
 
-        return result
+        return jsonify(result)
 
     
     except:
@@ -396,8 +395,7 @@ def update_rating():
         user="coffee_db_technical_user",
         password="coffeedb")
     cursor = conn.cursor()
-
-    query = f"INSERT INTO ratings (customer_id, shop_id, score) VALUES ({data['customer_id']}, {data['shop_id']}, {data['score']}) ON CONFLICT (customer_id, shop_id) DO UPDATE SET score = {data['score']};"
+    query = f"INSERT INTO ratings (customer_id, shop_id, score) VALUES ({data['customer_id']}, {data['shop_id']}, {data['score']}) ON DUPLICATE KEY UPDATE score = {data['score']};"
     cursor.execute(query)
 
     conn.commit()
@@ -456,17 +454,19 @@ def process_order():
     last_id_value = last_id[0][0]
 
     order_items_data = []
+    
     for sublist in json.loads(data['order_items']):
         sublist.append(last_id_value+1)
         order_items_data.append(sublist)
 
     insert_items_tuples = ", ".join([str(tuple(row)) for row in order_items_data]) # order_id value still missing here
-
     # insertion queries
-    insertion_query = f"""insert into orders (order_id, shop_id, customer_id, order_date) values ({last_id_value+1}, {data['shop_id']}, {data['customer_id']}, {current_date});
-                          insert into orderitem (coffee_type, size, number, order_id) values {insert_items_tuples};"""
-
+    insertion_query = f"""insert into orders (order_id, shop_id, customer_id, order_date) values ({last_id_value+1}, {data['shop_id']}, {data['customer_id']}, {current_date});"""
     cursor.execute(insertion_query)
+    for row in order_items_data:
+        insertion_query2 = f"insert into orderitem (coffee_type, size, nummer, order_id) values({str(tuple(row))},{last_id_value+1});"
+        cursor.execute(insertion_query2)
+
     conn.commit()
     cursor.close()
     conn.close()
